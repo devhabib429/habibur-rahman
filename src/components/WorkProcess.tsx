@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 import { ArrowRight, MessageSquare, Rocket, Search, Settings, Users } from "lucide-react";
 import { Button } from "./ui/button";
 
-declare global {
-  interface Window {
-    Cal?: {
-      showPopup: () => void;
-    };
+interface CalWindow extends Window {
+  Cal?: {
+    showPopup: () => void;
   }
+}
+
+declare global {
+  interface Window extends CalWindow {}
 }
 
 const WorkProcess = () => {
@@ -46,7 +48,7 @@ const WorkProcess = () => {
   };
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gray-800 text-white">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -55,7 +57,7 @@ const WorkProcess = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl font-bold mb-4">How I Work</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-gray-300 max-w-2xl mx-auto">
             My structured approach ensures successful project delivery while maintaining clear communication throughout the process.
           </p>
         </motion.div>
@@ -69,10 +71,10 @@ const WorkProcess = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="relative"
             >
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center h-full">
+              <div className="bg-gray-700 p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 text-center h-full border border-gray-600">
                 <div className="mb-4 text-primary flex justify-center">{step.icon}</div>
                 <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                <p className="text-gray-600 text-sm">{step.description}</p>
+                <p className="text-gray-300 text-sm">{step.description}</p>
               </div>
               {index < steps.length - 1 && (
                 <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary" />
