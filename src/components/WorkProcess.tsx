@@ -2,14 +2,13 @@ import { motion } from "framer-motion";
 import { ArrowRight, MessageSquare, Rocket, Search, Settings, Users } from "lucide-react";
 import { Button } from "./ui/button";
 
-interface CalWindow extends Window {
-  Cal?: {
-    showPopup: () => void;
-  }
-}
-
+// Declare Cal type globally
 declare global {
-  interface Window extends CalWindow {}
+  interface Window {
+    Cal?: {
+      showPopup: () => void;
+    };
+  }
 }
 
 const WorkProcess = () => {
@@ -42,7 +41,7 @@ const WorkProcess = () => {
   ];
 
   const handleScheduleClick = () => {
-    if (window.Cal) {
+    if (window.Cal?.showPopup) {
       window.Cal.showPopup();
     }
   };

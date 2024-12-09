@@ -1,19 +1,40 @@
 import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 
+// Declare Cal type globally
+declare global {
+  interface Window {
+    Cal?: {
+      init: (config?: any) => void;
+    };
+  }
+}
+
 const CalendarBooking = () => {
   useEffect(() => {
-    // Initialize Cal.com embed
-    (async function () {
-      const Cal = await import("@calcom/embed-react");
-      Cal.default({
-        calLink: "your-cal-username", // Replace with your Cal.com username
-        config: {
-          name: "Portfolio Booking",
-          theme: "light",
-        },
-      });
-    })();
+    // Load Cal.com script
+    const script = document.createElement('script');
+    script.src = "https://cal.com/embed.js";
+    script.async = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      // Initialize Cal after script loads
+      if (window.Cal) {
+        window.Cal.init({
+          calLink: "your-cal-username", // Replace with your Cal.com username
+          config: {
+            name: "Portfolio Booking",
+            theme: "light",
+          },
+        });
+      }
+    };
+
+    // Cleanup
+    return () => {
+      document.body.removeChild(script);
+    };
   }, []);
 
   return (
@@ -27,7 +48,10 @@ const CalendarBooking = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div data-cal-link="your-cal-username" className="min-h-[500px]" /> {/* Replace with your Cal.com username */}
+            <div 
+              data-cal-link="your-cal-username" // Replace with your Cal.com username
+              className="min-h-[500px]" 
+            />
           </CardContent>
         </Card>
       </div>
