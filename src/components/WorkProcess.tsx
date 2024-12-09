@@ -2,6 +2,14 @@ import { motion } from "framer-motion";
 import { ArrowRight, MessageSquare, Rocket, Search, Settings, Users } from "lucide-react";
 import { Button } from "./ui/button";
 
+declare global {
+  interface Window {
+    Cal?: {
+      showPopup: () => void;
+    };
+  }
+}
+
 const WorkProcess = () => {
   const steps = [
     {
@@ -30,6 +38,12 @@ const WorkProcess = () => {
       description: "Thorough testing and deployment of your solution.",
     },
   ];
+
+  const handleScheduleClick = () => {
+    if (window.Cal) {
+      window.Cal.showPopup();
+    }
+  };
 
   return (
     <section className="py-20 bg-gray-50">
@@ -76,9 +90,7 @@ const WorkProcess = () => {
           <Button
             size="lg"
             className="bg-primary hover:bg-primary/90"
-            onClick={() => {
-              window.Cal?.showPopup();
-            }}
+            onClick={handleScheduleClick}
           >
             Schedule a Consultation
           </Button>
