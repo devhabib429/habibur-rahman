@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { Terminal, Database } from "lucide-react";
 
 const Hero = () => {
   const [text, setText] = useState("");
-  const fullText = "Building Digital Solutions";
+  const fullText = "DevOps & ERPNext Solutions";
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -18,50 +18,33 @@ const Hero = () => {
   }, [index]);
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute bg-primary/10 rounded-full"
-            style={{
-              width: Math.random() * 300 + 50,
-              height: Math.random() * 300 + 50,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              scale: [1, 2, 1],
-              opacity: [0.3, 0.6, 0.3],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: Math.random() * 5 + 5,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
-
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center text-white">
+        <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            className="flex justify-center gap-4 mb-8"
           >
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent">
-              Hello, I'm <span className="text-white">Your Name</span>
-            </h1>
+            <Terminal className="w-12 h-12 text-primary" />
+            <Database className="w-12 h-12 text-secondary" />
           </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-4xl md:text-6xl font-light mb-6 text-white font-['Space_Grotesk']"
+          >
+            Streamline Your Business with
+          </motion.h1>
 
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-3xl md:text-5xl font-semibold mb-8"
+            className="text-3xl md:text-5xl font-normal mb-8 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-['Space_Grotesk']"
           >
             {text}
             <span className="animate-pulse">|</span>
@@ -71,23 +54,21 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-12"
+            className="text-xl text-gray-300 max-w-2xl mx-auto mb-12 font-['Inter']"
           >
-            A passionate developer specializing in DevOps, Full-stack Development, and AI solutions.
+            Specialized in implementing ERPNext solutions and DevOps practices to enhance your business operations
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <a
               href="#contact"
-              className="group inline-flex items-center gap-2 bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-8 py-3 rounded-full text-lg font-semibold transition-all transform hover:scale-105"
+              className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 hover:bg-primary/20 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all"
             >
-              Let's Connect
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              Get Started
             </a>
           </motion.div>
         </div>
