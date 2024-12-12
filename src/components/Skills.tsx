@@ -63,9 +63,9 @@ const Skills = () => {
   };
 
   return (
-    <section id="skills" className="py-24 bg-gradient-to-b from-gray-900 to-gray-800">
+    <section className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 relative z-10">
           <motion.h2 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,22 +88,26 @@ const Skills = () => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10"
         >
           {skills.map((skill, index) => (
             <motion.div
               key={skill.title}
               variants={itemVariants}
-              whileHover={{ scale: 1.05, transition: { duration: 0.2 } }}
-              className="relative group"
+              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
+              className="group relative"
             >
               <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl blur-xl -z-10" />
-              <div className={`h-full bg-gray-800/50 backdrop-blur-sm border border-gray-700 rounded-xl p-8 hover:border-gray-500 transition-all duration-300`}>
-                <div className={`inline-flex p-4 rounded-lg bg-gradient-to-r ${skill.gradient} mb-6`}>
+              <div className="h-full bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-8 hover:border-primary/50 transition-all duration-300 group-hover:shadow-[0_0_2rem_-0.5rem_theme(colors.primary.DEFAULT)]">
+                <div className={`inline-flex p-4 rounded-lg bg-gradient-to-r ${skill.gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   {skill.icon}
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4">{skill.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{skill.description}</p>
+                <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-primary transition-colors duration-300">
+                  {skill.title}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {skill.description}
+                </p>
               </div>
             </motion.div>
           ))}
