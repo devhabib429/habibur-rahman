@@ -18,55 +18,46 @@ const Hero = () => {
   }, [index]);
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
+    <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex justify-center gap-4 mb-8"
+            className="mb-8"
           >
-            <Terminal className="w-12 h-12 text-primary" />
-            <Database className="w-12 h-12 text-secondary" />
+            <Terminal className="w-12 h-12 text-primary inline-block" />
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-6xl font-light mb-6 text-white font-['Space_Grotesk']"
-          >
-            Streamline Your Business with
-          </motion.h1>
-
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-3xl md:text-5xl font-normal mb-8 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent font-['Space_Grotesk']"
+            className="text-3xl md:text-5xl font-light mb-6 text-white font-['Space_Grotesk']"
           >
             {text}
             <span className="animate-pulse">|</span>
-          </motion.h2>
+          </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl text-gray-300 max-w-2xl mx-auto mb-12 font-['Inter']"
+            className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-12 font-['Inter'] leading-relaxed"
           >
-            Specialized in implementing ERPNext solutions and DevOps practices to enhance your business operations
+            Specialized in implementing ERPNext solutions and DevOps practices to streamline your business operations and enhance efficiency.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex justify-center gap-4 flex-wrap"
           >
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 hover:bg-primary/20 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all"
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105"
             >
               Get Started
             </a>

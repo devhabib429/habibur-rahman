@@ -1,66 +1,69 @@
-import { Github, Linkedin, Mail, Twitter } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import { Button } from "./ui/button";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      toast.success("Thank you for subscribing!");
+      setEmail("");
+    }
+  };
+
   return (
-    <footer className="w-full bg-gradient-to-r from-gray-900 to-gray-800 text-white py-12">
+    <footer className="w-full bg-gradient-to-b from-gray-900 to-gray-950 text-white py-16">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold">Get in Touch</h3>
-            <p className="text-gray-300">Let's discuss your next project</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-light font-['Space_Grotesk']">Get in Touch</h3>
+            <p className="text-gray-300 font-['Inter'] max-w-md">
+              Ready to transform your business with modern DevOps practices and ERPNext solutions? Let's connect.
+            </p>
             <div className="flex space-x-4">
-              <Button variant="ghost" size="icon" className="hover:text-primary">
+              <Button variant="ghost" size="icon" className="hover:text-primary transition-colors">
                 <Github className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="hover:text-primary">
+              <Button variant="ghost" size="icon" className="hover:text-primary transition-colors">
                 <Linkedin className="h-5 w-5" />
               </Button>
-              <Button variant="ghost" size="icon" className="hover:text-primary">
-                <Twitter className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="hover:text-primary">
+              <Button variant="ghost" size="icon" className="hover:text-primary transition-colors">
                 <Mail className="h-5 w-5" />
               </Button>
             </div>
           </div>
           
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold">Services</h3>
-            <ul className="space-y-2 text-gray-300">
-              <li>Web Development</li>
-              <li>DevOps Solutions</li>
-              <li>AI Integration</li>
-              <li>Cloud Architecture</li>
-            </ul>
-          </div>
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold">Quick Links</h3>
-            <ul className="space-y-2 text-gray-300">
-              <li><a href="#home" className="hover:text-primary transition-colors">Home</a></li>
-              <li><a href="#skills" className="hover:text-primary transition-colors">Skills</a></li>
-              <li><a href="#projects" className="hover:text-primary transition-colors">Projects</a></li>
-              <li><a href="#contact" className="hover:text-primary transition-colors">Contact</a></li>
-            </ul>
-          </div>
-          
-          <div className="space-y-4">
-            <h3 className="text-xl font-bold">Newsletter</h3>
-            <p className="text-gray-300">Subscribe for updates and insights</p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="px-4 py-2 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary"
-              />
-              <Button className="bg-primary hover:bg-primary/90">Subscribe</Button>
-            </div>
+          <div className="space-y-6">
+            <h3 className="text-2xl font-light font-['Space_Grotesk']">Newsletter</h3>
+            <p className="text-gray-300 font-['Inter']">
+              Subscribe for insights on DevOps and ERPNext
+            </p>
+            <form onSubmit={handleSubscribe} className="space-y-4">
+              <div className="relative max-w-md">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-800/50 border border-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent transition-all font-['Inter']"
+                  required
+                />
+                <Button 
+                  type="submit"
+                  className="mt-3 w-full md:w-auto bg-primary hover:bg-primary/90 text-white transition-all transform hover:scale-105"
+                >
+                  Subscribe
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
         
-        <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-400">
-          <p>© {new Date().getFullYear()} Your Name. All rights reserved.</p>
+        <div className="mt-16 pt-8 border-t border-gray-800 text-center text-gray-400 font-['Inter']">
+          <p>© {new Date().getFullYear()} Your Company. All rights reserved.</p>
         </div>
       </div>
     </footer>
