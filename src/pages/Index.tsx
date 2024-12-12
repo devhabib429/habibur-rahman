@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
-import Skills from "../components/Skills";
+import Roles from "../components/Roles";
+import Timeline from "../components/Timeline";
 import Footer from "../components/Footer";
 
 const Index = () => {
@@ -16,7 +17,8 @@ const Index = () => {
         <main>
           <Hero />
           <div className="relative z-10">
-            <Skills />
+            <Roles />
+            <Timeline />
           </div>
         </main>
         <Footer />
