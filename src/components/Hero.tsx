@@ -25,24 +25,31 @@ const Hero = () => {
 
   return (
     <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
-      {/* KubeCon Banner */}
+      {/* Enhanced KubeCon Banner */}
       <motion.div 
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary via-secondary to-accent p-4 text-white text-center"
+        className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary/90 via-secondary/90 to-accent/90 backdrop-blur-sm p-4 md:p-3"
       >
-        <p className="text-sm md:text-base animate-pulse">
-          🎉 Currently attending KubeCon + CloudNative India 2024! Let's connect and discuss cloud-native solutions! 
-          <a 
-            href="https://events.linuxfoundation.org/kubecon-cloudnativecon-india/" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="underline ml-2 hover:text-white/90"
-          >
-            Learn more
-          </a>
-        </p>
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4">
+            <div className="flex items-center gap-2">
+              <span className="animate-pulse text-xl">🎉</span>
+              <p className="text-white text-sm md:text-base font-medium">
+                Currently attending KubeCon + CloudNative India 2024!
+              </p>
+            </div>
+            <a 
+              href="https://events.linuxfoundation.org/kubecon-cloudnativecon-india/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-white text-sm md:text-base hover:text-white/90 underline underline-offset-2 transition-colors"
+            >
+              Let's connect and discuss cloud-native solutions!
+            </a>
+          </div>
+        </div>
       </motion.div>
 
       {/* Enhanced animated background elements */}
@@ -86,7 +93,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex justify-center gap-4 flex-wrap"
+            className="flex flex-col sm:flex-row justify-center gap-4"
           >
             <Link
               to="/start-project"
