@@ -25,6 +25,26 @@ const Hero = () => {
 
   return (
     <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
+      {/* KubeCon Banner */}
+      <motion.div 
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="absolute top-0 left-0 right-0 bg-gradient-to-r from-primary via-secondary to-accent p-4 text-white text-center"
+      >
+        <p className="text-sm md:text-base animate-pulse">
+          🎉 Currently attending KubeCon + CloudNative India 2024! Let's connect and discuss cloud-native solutions! 
+          <a 
+            href="https://events.linuxfoundation.org/kubecon-cloudnativecon-india/" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="underline ml-2 hover:text-white/90"
+          >
+            Learn more
+          </a>
+        </p>
+      </motion.div>
+
       {/* Enhanced animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -32,7 +52,7 @@ const Hero = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent animate-pulse" />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 mt-16">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
