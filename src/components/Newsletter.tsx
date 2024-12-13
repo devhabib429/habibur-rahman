@@ -15,7 +15,7 @@ const Newsletter = () => {
   };
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <section id="newsletter" className="py-20 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-950" />
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:24px_24px]" />
       

@@ -17,12 +17,18 @@ const Hero = () => {
     }
   }, [index]);
 
+  const scrollToNewsletter = () => {
+    const newsletterSection = document.getElementById('newsletter');
+    newsletterSection?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <section className="min-h-[80vh] flex items-center justify-center relative overflow-hidden bg-gradient-to-b from-gray-900 to-gray-800">
-      {/* Animated background elements */}
+      {/* Enhanced animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="absolute inset-0 animate-gradient-y bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 opacity-50" />
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent animate-pulse" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -40,7 +46,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-3xl md:text-5xl font-light mb-6 text-white font-['Space_Grotesk']"
+            className="text-4xl md:text-6xl font-light mb-6 text-white font-['Space_Grotesk'] tracking-tight"
           >
             {text}
             <span className="animate-pulse">|</span>
@@ -61,12 +67,12 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex justify-center gap-4 flex-wrap"
           >
-            <a
-              href="#contact"
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105"
+            <button
+              onClick={scrollToNewsletter}
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:shadow-lg"
             >
-              Get Started
-            </a>
+              Subscribe Newsletter
+            </button>
           </motion.div>
         </div>
       </div>
