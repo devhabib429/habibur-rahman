@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Terminal } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [text, setText] = useState("");
@@ -67,9 +68,15 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="flex justify-center gap-4 flex-wrap"
           >
+            <Link
+              to="/start-project"
+              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:shadow-lg"
+            >
+              Start Project
+            </Link>
             <button
               onClick={scrollToNewsletter}
-              className="bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:shadow-lg"
+              className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:shadow-lg"
             >
               Subscribe Newsletter
             </button>
