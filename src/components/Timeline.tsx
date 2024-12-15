@@ -1,24 +1,27 @@
 import { motion } from "framer-motion";
-import { Calendar, Award, Briefcase } from "lucide-react";
+import { Calendar, Briefcase, Code } from "lucide-react";
 
 const Timeline = () => {
   const experiences = [
     {
-      year: "2023",
-      title: "Senior DevOps Engineer",
-      description: "Led cloud infrastructure and CI/CD pipeline optimization, implementing Kubernetes clusters and managing multi-cloud environments",
-      icon: <Briefcase className="w-6 h-6" />
-    },
-    {
-      year: "2022",
-      title: "ERPNext Specialist",
-      description: "Implemented custom ERPNext solutions for enterprise clients, focusing on automation and integration with existing systems",
-      icon: <Award className="w-6 h-6" />
+      year: "2021 - Present",
+      title: "Developer",
+      company: "Tata Technologies Ltd",
+      description: "Currently working as a Developer at Tata Technologies Ltd, contributing to various development projects.",
+      icon: <Code className="w-6 h-6" />
     },
     {
       year: "2021",
-      title: "Automation Engineer",
-      description: "Developed automated workflows and deployment processes, reducing deployment time by 60% and improving system reliability",
+      title: "DevOps Engineer",
+      company: "Nestorbird Ltd",
+      description: "Worked as a DevOps Engineer, implementing and maintaining CI/CD pipelines and cloud infrastructure.",
+      icon: <Briefcase className="w-6 h-6" />
+    },
+    {
+      year: "2019 - 2021",
+      title: "Full Stack Developer Intern",
+      company: "CRTD Technologies",
+      description: "Started career as a Full Stack Developer Intern, working on various web development projects.",
       icon: <Calendar className="w-6 h-6" />
     }
   ];
@@ -67,7 +70,7 @@ const Timeline = () => {
           
           {experiences.map((exp, index) => (
             <motion.div
-              key={exp.year}
+              key={exp.title}
               variants={itemVariants}
               className={`flex items-center mb-16 ${
                 index % 2 === 0 ? "flex-row" : "flex-row-reverse"
@@ -87,6 +90,7 @@ const Timeline = () => {
                     {exp.year}
                   </motion.span>
                   <h3 className="text-white text-lg font-bold mb-2 font-['Space_Grotesk']">{exp.title}</h3>
+                  <h4 className="text-primary text-md mb-2 font-['Space_Grotesk']">{exp.company}</h4>
                   <p className="text-gray-300 font-['Inter']">{exp.description}</p>
                 </motion.div>
               </div>
