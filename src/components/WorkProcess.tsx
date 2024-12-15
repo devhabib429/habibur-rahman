@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, MessageSquare, Rocket, Search, Settings, Users } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
 const WorkProcess = () => {
   const steps = [
@@ -73,13 +74,14 @@ const WorkProcess = () => {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center mt-16"
         >
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90"
-            onClick={() => window.location.href = "#contact"}
-          >
-            Start a Project
-          </Button>
+          <Link to="/start-project">
+            <Button
+              size="lg"
+              className="bg-primary hover:bg-primary/90"
+            >
+              Start a Project
+            </Button>
+          </Link>
         </motion.div>
       </div>
     </section>
