@@ -6,22 +6,43 @@ const Timeline = () => {
     {
       year: "2023",
       title: "Senior DevOps Engineer",
-      description: "Led cloud infrastructure and CI/CD pipeline optimization",
+      description: "Led cloud infrastructure and CI/CD pipeline optimization, implementing Kubernetes clusters and managing multi-cloud environments",
       icon: <Briefcase className="w-6 h-6" />
     },
     {
       year: "2022",
       title: "ERPNext Specialist",
-      description: "Implemented custom ERPNext solutions for enterprise clients",
+      description: "Implemented custom ERPNext solutions for enterprise clients, focusing on automation and integration with existing systems",
       icon: <Award className="w-6 h-6" />
     },
     {
       year: "2021",
       title: "Automation Engineer",
-      description: "Developed automated workflows and deployment processes",
+      description: "Developed automated workflows and deployment processes, reducing deployment time by 60% and improving system reliability",
       icon: <Calendar className="w-6 h-6" />
     }
   ];
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8
+      }
+    }
+  };
 
   return (
     <section className="py-20 relative">
@@ -34,36 +55,54 @@ const Timeline = () => {
           Experience Timeline
         </motion.h2>
         
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gray-700" />
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="relative"
+        >
+          {/* Vertical line with gradient */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-primary via-secondary to-accent" />
           
           {experiences.map((exp, index) => (
             <motion.div
               key={exp.year}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.2 }}
+              variants={itemVariants}
               className={`flex items-center mb-16 ${
                 index % 2 === 0 ? "flex-row" : "flex-row-reverse"
               }`}
             >
               <div className={`w-1/2 ${index % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}>
-                <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-6 hover:border-primary/50 transition-all duration-300">
-                  <span className="text-primary font-bold text-xl mb-2 block font-['Space_Grotesk']">{exp.year}</span>
+                <motion.div 
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-6 hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-primary/20"
+                >
+                  <motion.span 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2 }}
+                    className="text-primary font-bold text-xl mb-2 block font-['Space_Grotesk']"
+                  >
+                    {exp.year}
+                  </motion.span>
                   <h3 className="text-white text-lg font-bold mb-2 font-['Space_Grotesk']">{exp.title}</h3>
                   <p className="text-gray-300 font-['Inter']">{exp.description}</p>
-                </div>
+                </motion.div>
               </div>
               
-              <div className="relative z-10 flex items-center justify-center w-12 h-12 bg-primary rounded-full border-4 border-gray-900">
+              <motion.div 
+                whileHover={{ scale: 1.2, rotate: 360 }}
+                transition={{ duration: 0.5 }}
+                className="relative z-10 flex items-center justify-center w-12 h-12 bg-primary rounded-full border-4 border-gray-900 text-white"
+              >
                 {exp.icon}
-              </div>
+              </motion.div>
               
               <div className="w-1/2" />
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
