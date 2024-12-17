@@ -36,7 +36,7 @@ const ResourcesPreview = () => {
                 In-depth articles about DevOps practices, ERPNext customization, and more
               </p>
               <Link
-                to="/resources"
+                to="/resources?type=blogs"
                 className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
               >
                 Read Articles <ArrowRight className="ml-2 w-4 h-4" />
@@ -58,7 +58,7 @@ const ResourcesPreview = () => {
                 Step-by-step video guides for implementing DevOps solutions and ERPNext features
               </p>
               <Link
-                to="/resources"
+                to="/resources?type=videos"
                 className="inline-flex items-center text-primary hover:text-primary/80 transition-colors"
               >
                 Watch Videos <ArrowRight className="ml-2 w-4 h-4" />
