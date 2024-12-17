@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import ProjectForm from "./pages/ProjectForm";
+import Resources from "./pages/Resources";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/start-project" element={<ProjectForm />} />
+              <Route path="/resources" element={<Resources />} />
             </Routes>
           </BrowserRouter>
         </TooltipProvider>

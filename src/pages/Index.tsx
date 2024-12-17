@@ -7,6 +7,7 @@ import Footer from "../components/Footer";
 import WorkProcess from "../components/WorkProcess";
 import RichContent from "../components/RichContent";
 import UnpopularOpinions from "../components/UnpopularOpinions";
+import ResourcesPreview from "../components/ResourcesPreview";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
             <RichContent />
             <Timeline />
             <WorkProcess />
+            <ResourcesPreview />
             <UnpopularOpinions />
             <Newsletter />
           </div>
