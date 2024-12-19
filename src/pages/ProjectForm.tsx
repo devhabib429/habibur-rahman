@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Send } from "lucide-react";
 import { toast } from "sonner";
+import { createClient } from '@supabase/supabase-js';
 
 const ProjectForm = () => {
   const [formData, setFormData] = useState({
@@ -14,19 +15,52 @@ const ProjectForm = () => {
     timeline: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_ANON_KEY
+  );
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    toast.success("Thank you for your submission! We'll get back to you soon.");
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      projectType: "devops",
-      description: "",
-      budget: "",
-      timeline: ""
-    });
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase
+        .from('projects')
+        .insert([
+          {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            project_type: formData.projectType,
+            description: formData.description,
+            budget: formData.budget,
+            timeline: formData.timeline
+          }
+        ]);
+
+      if (error) throw error;
+
+      toast.success("Thank you for your submission! We'll get back to you soon.");
+      
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        projectType: "devops",
+        description: "",
+        budget: "",
+        timeline: ""
+      });
+    } catch (error) {
+      console.error('Error submitting project:', error);
+      toast.error("There was an error submitting your project. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -142,10 +176,17 @@ const ProjectForm = () => {
 
             <button
               type="submit"
-              className="w-full bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2"
+              disabled={isSubmitting}
+              className="w-full bg-primary hover:bg-primary/90 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Submit Project Request
-              <Send className="w-5 h-5" />
+              {isSubmitting ? (
+                "Submitting..."
+              ) : (
+                <>
+                  Submit Project Request
+                  <Send className="w-5 h-5" />
+                </>
+              )}
             </button>
           </form>
         </div>
