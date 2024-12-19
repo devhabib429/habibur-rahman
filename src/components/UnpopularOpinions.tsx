@@ -1,24 +1,30 @@
 import { motion } from "framer-motion";
 import { AlertTriangle } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  'https://fdkushkqnwsljjfaulqg.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2MTAxNjcsImV4cCI6MjA1MDE4NjE2N30.Z_UIgomBp_4xxNaq8GTg3ax6SXFgFg4q4xr5BGYvYFA'
+);
 
 const UnpopularOpinions = () => {
-  const opinions = [
-    {
-      category: "DevOps",
-      opinion: "Not every team needs Kubernetes",
-      explanation: "For many small to medium applications, simpler container orchestration or traditional deployment methods are more efficient."
+  const { data: opinions, isLoading } = useQuery({
+    queryKey: ['hotTakes'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('hot_takes')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+      return data;
     },
-    {
-      category: "ERPNext",
-      opinion: "Custom implementations often create more problems",
-      explanation: "Sticking to standard features and adapting business processes can lead to better maintainability."
-    },
-    {
-      category: "GenAI",
-      opinion: "Not every process needs AI automation",
-      explanation: "Traditional automation can be more reliable and cost-effective for many business processes."
-    }
-  ];
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="py-16 bg-gray-900/50 backdrop-blur-sm">
@@ -36,9 +42,9 @@ const UnpopularOpinions = () => {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {opinions.map((item, index) => (
+          {opinions?.map((item, index) => (
             <motion.div
-              key={index}
+              key={item.id}
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
