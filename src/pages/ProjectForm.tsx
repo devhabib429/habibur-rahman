@@ -4,6 +4,12 @@ import { Send } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from '@supabase/supabase-js';
 
+// Initialize Supabase client
+const supabase = createClient(
+  'https://fdkushkqnwsljjfaulqg.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2MTAxNjcsImV4cCI6MjA1MDE4NjE2N30.Z_UIgomBp_4xxNaq8GTg3ax6SXFgFg4q4xr5BGYvYFA'
+);
+
 const ProjectForm = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -16,11 +22,6 @@ const ProjectForm = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const supabase = createClient(
-    import.meta.env.VITE_SUPABASE_URL,
-    import.meta.env.VITE_SUPABASE_ANON_KEY
-  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
