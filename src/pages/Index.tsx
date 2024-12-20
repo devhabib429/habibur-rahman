@@ -19,7 +19,9 @@ const Index = () => {
         </div>
         
         <Navbar />
-        <EventBanner />
+        <div className="pt-16">
+          <EventBanner />
+        </div>
         <main>
           <Hero />
           <div className="relative z-10">
