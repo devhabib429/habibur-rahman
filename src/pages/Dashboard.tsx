@@ -4,6 +4,7 @@ import ProjectsTable from "@/components/dashboard/ProjectsTable";
 import HotTakesManager from "@/components/dashboard/HotTakesManager";
 import ResourcesManager from "@/components/dashboard/ResourcesManager";
 import TimelineManager from "@/components/dashboard/TimelineManager";
+import BannerManager from "@/components/dashboard/BannerManager";
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
@@ -60,6 +61,12 @@ const Dashboard = () => {
             >
               Timeline
             </TabsTrigger>
+            <TabsTrigger 
+              value="banner"
+              className="data-[state=active]:bg-purple-600 data-[state=active]:text-white px-6"
+            >
+              Banner
+            </TabsTrigger>
           </TabsList>
           
           <motion.div
@@ -89,6 +96,12 @@ const Dashboard = () => {
             <TabsContent value="timeline" className="space-y-4 mt-4">
               <div className="backdrop-blur-xl bg-gray-900/50 p-6 rounded-xl border border-purple-500/20 shadow-xl">
                 <TimelineManager />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="banner" className="space-y-4 mt-4">
+              <div className="backdrop-blur-xl bg-gray-900/50 p-6 rounded-xl border border-purple-500/20 shadow-xl">
+                <BannerManager />
               </div>
             </TabsContent>
           </motion.div>

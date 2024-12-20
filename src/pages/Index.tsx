@@ -8,6 +8,7 @@ import WorkProcess from "../components/WorkProcess";
 import RichContent from "../components/RichContent";
 import UnpopularOpinions from "../components/UnpopularOpinions";
 import ResourcesPreview from "../components/ResourcesPreview";
+import EventBanner from "../components/EventBanner";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
         </div>
         
         <Navbar />
+        <EventBanner />
         <main>
           <Hero />
           <div className="relative z-10">
