@@ -9,6 +9,15 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg5NTg4MDgsImV4cCI6MjAyNDUzNDgwOH0.HCYi6SXD42qk8lB7HqvH_dqTEBpwgmqk_TZGjKqbYIg'
 );
 
+interface BannerData {
+  id: number;
+  title: string;
+  subtitle: string;
+  location: string;
+  dates: string;
+  is_visible: boolean;
+}
+
 const EventBanner = () => {
   const { data: banner, isLoading } = useQuery({
     queryKey: ['eventBanner'],
@@ -21,7 +30,7 @@ const EventBanner = () => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as BannerData;
     }
   });
 

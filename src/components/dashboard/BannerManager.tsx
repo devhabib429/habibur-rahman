@@ -14,10 +14,20 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg5NTg4MDgsImV4cCI6MjAyNDUzNDgwOH0.HCYi6SXD42qk8lB7HqvH_dqTEBpwgmqk_TZGjKqbYIg'
 );
 
+interface BannerData {
+  id: number;
+  title: string;
+  subtitle: string;
+  location: string;
+  dates: string;
+  is_visible: boolean;
+}
+
 const BannerManager = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = React.useState<BannerData>({
+    id: 0,
     title: '',
     subtitle: '',
     location: '',
@@ -36,7 +46,7 @@ const BannerManager = () => {
         .single();
       
       if (error) throw error;
-      return data;
+      return data as BannerData;
     }
   });
 
@@ -47,13 +57,20 @@ const BannerManager = () => {
   }, [banner]);
 
   const updateBanner = useMutation({
-    mutationFn: async (newData) => {
+    mutationFn: async (newData: BannerData) => {
       const { error } = await supabase
         .from('event_banners')
-        .update(newData)
-        .eq('id', banner.id);
+        .update({
+          title: newData.title,
+          subtitle: newData.subtitle,
+          location: newData.location,
+          dates: newData.dates,
+          is_visible: newData.is_visible
+        })
+        .eq('id', newData.id);
       
       if (error) throw error;
+      return newData;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['eventBanner'] });
