@@ -2,13 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Globe, MapPin, Calendar } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
-import { createClient } from '@supabase/supabase-js';
-
-// Create a single Supabase client instance
-const supabase = createClient(
-  'https://fdkushkqnwsljjfaulqg.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg5NTg4MDgsImV4cCI6MjAyNDUzNDgwOH0.HCYi6SXD42qk8lB7HqvH_dqTEBpwgmqk_TZGjKqbYIg'
-);
+import { supabase } from '@/lib/supabase';
 
 interface BannerData {
   id: number;
@@ -38,7 +32,8 @@ const EventBanner = () => {
       
       console.log('Banner data received:', data);
       return data as BannerData;
-    }
+    },
+    retry: false
   });
 
   if (isLoading) {
