@@ -6,7 +6,7 @@ import ResourcesManager from "@/components/dashboard/ResourcesManager";
 import TimelineManager from "@/components/dashboard/TimelineManager";
 import BannerManager from "@/components/dashboard/BannerManager";
 import { motion } from "framer-motion";
-import { Sparkles, Layout, MessageSquare, BookOpen, Timeline, Flag } from "lucide-react";
+import { Sparkles, Layout, MessageSquare, BookOpen, History, Flag } from "lucide-react";
 
 const Dashboard = () => {
   return (
@@ -63,7 +63,7 @@ const Dashboard = () => {
               value="timeline"
               className="data-[state=active]:bg-[#8B5CF6] data-[state=active]:text-white px-6 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium transition-all duration-200 hover:bg-[#8B5CF6]/10"
             >
-              <Timeline className="w-4 h-4" />
+              <History className="w-4 h-4" />
               Timeline
             </TabsTrigger>
             <TabsTrigger 
