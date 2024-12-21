@@ -9,6 +9,7 @@ import RichContent from "../components/RichContent";
 import UnpopularOpinions from "../components/UnpopularOpinions";
 import ResourcesPreview from "../components/ResourcesPreview";
 import EventBanner from "../components/EventBanner";
+import ContactSection from "../components/ContactSection";
 
 const Index = () => {
   return (
@@ -32,6 +33,7 @@ const Index = () => {
             <ResourcesPreview />
             <UnpopularOpinions />
             <Newsletter />
+            <ContactSection />
           </div>
         </main>
         <Footer />
