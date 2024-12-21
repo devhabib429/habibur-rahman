@@ -32,8 +32,8 @@ const Index = () => {
             <WorkProcess />
             <ResourcesPreview />
             <UnpopularOpinions />
-            <Newsletter />
             <ContactSection />
+            <Newsletter />
           </div>
         </main>
         <Footer />
