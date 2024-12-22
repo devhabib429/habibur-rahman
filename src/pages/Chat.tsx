@@ -44,18 +44,18 @@ export default function Chat() {
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 flex flex-col">
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full p-4">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3">
+          <h1 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3 animate-fade-in">
             <MessageSquare className="h-8 w-8" />
             Chat with AI Assistant
           </h1>
-          <p className="text-gray-400">Powered by Mixtral-8x7B</p>
+          <p className="text-gray-400 animate-fade-in">Powered by Mixtral-8x7B</p>
         </div>
         
-        <div className="flex-1 bg-gray-800/50 rounded-lg shadow-xl backdrop-blur-sm border border-gray-700 flex flex-col">
+        <div className="flex-1 bg-gray-800/50 rounded-lg shadow-xl backdrop-blur-sm border border-gray-700 flex flex-col animate-scale-in">
           <div className="flex-1 p-6 overflow-y-auto space-y-4">
             {messages.length === 0 && (
-              <div className="text-center text-gray-500 mt-20">
-                <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <div className="text-center text-gray-500 mt-20 animate-fade-in">
+                <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50 animate-pulse" />
                 <p>Start a conversation with the AI assistant</p>
               </div>
             )}
@@ -65,11 +65,16 @@ export default function Chat() {
                 className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`p-4 rounded-lg max-w-[80%] ${
+                  className={`p-4 rounded-lg max-w-[80%] animate-fade-in ${
                     message.role === 'user' 
-                      ? 'bg-purple-500/20 text-white' 
-                      : 'bg-gray-700/50 text-gray-200'
+                      ? 'bg-purple-500/20 text-white backdrop-blur-sm shadow-lg' 
+                      : 'bg-gray-700/50 text-gray-200 backdrop-blur-sm shadow-lg'
                   }`}
+                  style={{
+                    animation: `fade-in 0.3s ease-out ${index * 0.1}s`,
+                    opacity: 0,
+                    animationFillMode: 'forwards'
+                  }}
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                 </div>
@@ -77,19 +82,19 @@ export default function Chat() {
             ))}
           </div>
           
-          <form onSubmit={handleSubmit} className="p-4 border-t border-gray-700">
-            <div className="flex gap-2">
+          <form onSubmit={handleSubmit} className="p-4 border-t border-gray-700 animate-fade-in">
+            <div className="flex gap-2 items-center">
               <Input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your message..."
                 disabled={isLoading}
-                className="flex-1 bg-gray-700/50 border-gray-600 focus:border-purple-500 text-white placeholder:text-gray-400"
+                className="flex-1 bg-gray-700/50 border-gray-600 focus:border-purple-500 text-white placeholder:text-gray-400 transition-all duration-200 hover:bg-gray-700/70 focus:ring-2 focus:ring-purple-500/50"
               />
               <Button 
                 type="submit" 
                 disabled={isLoading}
-                className="bg-purple-500 hover:bg-purple-600 text-white"
+                className="bg-purple-500 hover:bg-purple-600 text-white transition-all duration-200 hover:scale-105 active:scale-95"
               >
                 {isLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
