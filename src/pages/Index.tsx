@@ -10,7 +10,9 @@ import UnpopularOpinions from "../components/UnpopularOpinions";
 import ResourcesPreview from "../components/ResourcesPreview";
 import EventBanner from "../components/EventBanner";
 import ContactSection from "../components/ContactSection";
-import AIChat from "../components/AIChat";
+import { Button } from "@/components/ui/button";
+import { MessageSquare } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
@@ -31,9 +33,14 @@ const Index = () => {
             <RichContent />
             <Timeline />
             <WorkProcess />
-            <div className="py-16 container mx-auto">
-              <h2 className="text-3xl font-bold text-center mb-8 text-white">Chat with AI Assistant</h2>
-              <AIChat />
+            <div className="py-16 container mx-auto text-center">
+              <h2 className="text-3xl font-bold mb-6 text-white">Try Our AI Assistant</h2>
+              <Link to="/chat">
+                <Button className="bg-purple-500 hover:bg-purple-600">
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Chat with AI
+                </Button>
+              </Link>
             </div>
             <ResourcesPreview />
             <UnpopularOpinions />

@@ -15,12 +15,11 @@ serve(async (req) => {
     const { prompt } = await req.json()
     const hf = new HfInference(Deno.env.get('HUGGING_FACE_ACCESS_TOKEN'))
     
-    // Using a good default model for chat
     const response = await hf.textGeneration({
-      model: 'mistralai/Mistral-7B-Instruct-v0.1',
-      inputs: prompt,
+      model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+      inputs: `<s>[INST] ${prompt} [/INST]`,
       parameters: {
-        max_new_tokens: 250,
+        max_new_tokens: 500,
         temperature: 0.7,
         top_p: 0.95,
         repetition_penalty: 1.15
