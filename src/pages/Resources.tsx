@@ -1,17 +1,12 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ResourceCard from '../components/resources/ResourceCard';
 import ResourcesHero from '../components/resources/ResourcesHero';
 import { Tag } from 'lucide-react';
-
-const supabase = createClient(
-  'https://fdkushkqnwsljjfaulqg.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2MTAxNjcsImV4cCI6MjA1MDE4NjE2N30.Z_UIgomBp_4xxNaq8GTg3ax6SXFgFg4q4xr5BGYvYFA'
-);
 
 const Resources = () => {
   const [searchParams] = useSearchParams();
