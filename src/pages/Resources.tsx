@@ -64,7 +64,14 @@ const Resources = () => {
                 
                 <div className="grid gap-6 md:grid-cols-2">
                   {category.items.map((resource, index) => (
-                    <ResourceCard key={resource.id} resource={resource} index={index} />
+                    <ResourceCard 
+                      key={resource.id} 
+                      resource={{
+                        ...resource,
+                        link: resource.url // Map url to link for compatibility
+                      }} 
+                      index={index} 
+                    />
                   ))}
                 </div>
               </div>

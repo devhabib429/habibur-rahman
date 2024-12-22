@@ -13,17 +13,19 @@ interface ResourceCardProps {
     thumbnail?: string;
     duration?: string;
     views?: string;
-    type: 'blog' | 'video';
+    type: string; // Changed from "video" | "blog" to string
+    url: string; // Added to match Supabase schema
   };
   index: number;
 }
 
 const ResourceCard = ({ resource, index }: ResourceCardProps) => {
   const isBlog = resource.type === 'blog';
+  const link = resource.url || resource.link; // Use url from Supabase if available
 
   return (
     <motion.a
-      href={resource.link}
+      href={link}
       target="_blank"
       rel="noopener noreferrer"
       initial={{ opacity: 0, y: 20 }}
