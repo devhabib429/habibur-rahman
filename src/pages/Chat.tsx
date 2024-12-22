@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, SendHorizontal, MessageSquare } from "lucide-react";
@@ -8,17 +8,32 @@ import { supabase } from "@/integrations/supabase/client";
 export default function Chat() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string }>>([]);
+  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string, displayContent?: string }>>([]);
   const { toast } = useToast();
+  const [isTyping, setIsTyping] = useState(false);
+
+  const typeMessage = async (message: string, index: number) => {
+    setIsTyping(true);
+    const messageChars = message.split('');
+    for (let i = 0; i <= messageChars.length; i++) {
+      setMessages(prev => prev.map((msg, idx) => 
+        idx === index 
+          ? { ...msg, displayContent: message.slice(0, i) }
+          : msg
+      ));
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
+    setIsTyping(false);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     try {
       setIsLoading(true);
       const userMessage = input.trim();
-      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
+      setMessages(prev => [...prev, { role: 'user', content: userMessage, displayContent: userMessage }]);
       setInput("");
 
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
@@ -27,7 +42,9 @@ export default function Chat() {
 
       if (error) throw error;
 
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
+      const newMessage = { role: 'assistant' as const, content: data.response, displayContent: '' };
+      setMessages(prev => [...prev, newMessage]);
+      typeMessage(data.response, messages.length + 1);
     } catch (error) {
       console.error('Error:', error);
       toast({
@@ -76,7 +93,12 @@ export default function Chat() {
                     animationFillMode: 'forwards'
                   }}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                  <p className="text-sm whitespace-pre-wrap">
+                    {message.displayContent || message.content}
+                    {message.role === 'assistant' && message.displayContent !== message.content && (
+                      <span className="inline-block w-1 h-4 ml-1 bg-purple-500 animate-pulse" />
+                    )}
+                  </p>
                 </div>
               </div>
             ))}
@@ -88,12 +110,12 @@ export default function Chat() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your message..."
-                disabled={isLoading}
+                disabled={isLoading || isTyping}
                 className="flex-1 bg-gray-700/50 border-gray-600 focus:border-purple-500 text-white placeholder:text-gray-400 transition-all duration-200 hover:bg-gray-700/70 focus:ring-2 focus:ring-purple-500/50"
               />
               <Button 
                 type="submit" 
-                disabled={isLoading}
+                disabled={isLoading || isTyping}
                 className="bg-purple-500 hover:bg-purple-600 text-white transition-all duration-200 hover:scale-105 active:scale-95"
               >
                 {isLoading ? (
