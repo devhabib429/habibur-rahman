@@ -15,16 +15,27 @@ serve(async (req) => {
     const { prompt } = await req.json()
     const hf = new HfInference(Deno.env.get('HUGGING_FACE_ACCESS_TOKEN'))
     
+    // Enhanced system prompt for more complete responses
+    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. 
+    Please provide detailed, accurate, and complete responses to user queries. 
+    Make sure to:
+    - Address all parts of the question
+    - Provide relevant examples when appropriate
+    - Explain complex concepts clearly
+    - Be concise but thorough`
+    
     const response = await hf.textGeneration({
       model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
-      inputs: `<s>[INST] ${prompt} [/INST]`,
+      inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
       parameters: {
-        max_new_tokens: 500,
+        max_new_tokens: 1000, // Increased token limit for more complete responses
         temperature: 0.7,
         top_p: 0.95,
         repetition_penalty: 1.15
       }
     })
+
+    console.log('Generated response:', response.generated_text)
 
     return new Response(
       JSON.stringify({ response: response.generated_text }),
