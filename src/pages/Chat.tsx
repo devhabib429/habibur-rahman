@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Loader2, SendHorizontal, MessageSquare } from "lucide-react";
@@ -23,7 +23,6 @@ const Chat = () => {
           ? { ...msg, displayContent: message.slice(0, i) }
           : msg
       ));
-      // Reduced delay for faster typing effect
       await new Promise(resolve => setTimeout(resolve, 10));
     }
     setIsTyping(false);
@@ -39,17 +38,31 @@ const Chat = () => {
       setMessages(prev => [...prev, { role: 'user', content: userMessage, displayContent: userMessage }]);
       setInput("");
 
+      // Add a temporary loading message
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: '', 
+        displayContent: '▋' // Blinking cursor while waiting
+      }]);
+
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
         body: { prompt: userMessage }
       });
 
       if (error) throw error;
 
-      const newMessage = { role: 'assistant' as const, content: data.response, displayContent: '' };
-      setMessages(prev => [...prev, newMessage]);
+      // Remove the loading message and add the real response
+      setMessages(prev => {
+        const newMessages = prev.slice(0, -1); // Remove loading message
+        return [...newMessages, { role: 'assistant' as const, content: data.response, displayContent: '' }];
+      });
+      
+      // Start typing animation for the new message
       typeMessage(data.response, messages.length + 1);
     } catch (error) {
       console.error('Error:', error);
+      // Remove the loading message on error
+      setMessages(prev => prev.slice(0, -1));
       toast({
         title: "Error",
         description: "Failed to get response from AI. Please try again.",
@@ -61,10 +74,10 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
       <Navbar />
       
-      <main className="flex-1 container mx-auto px-4 py-8 mt-16 flex flex-col max-h-[calc(100vh-8rem)]">
+      <main className="flex-1 container mx-auto px-4 py-8 mt-16 flex flex-col">
         <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
           <div className="mb-8 text-center animate-fade-in">
             <h1 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3">
@@ -74,7 +87,7 @@ const Chat = () => {
             <p className="text-purple-300 animate-pulse">Powered by Mixtral-8x7B</p>
           </div>
           
-          <div className="flex-1 bg-gray-800/30 rounded-2xl shadow-2xl backdrop-blur-lg border border-purple-500/20 flex flex-col overflow-hidden animate-scale-in">
+          <div className="flex-1 bg-gray-800/30 rounded-2xl shadow-2xl backdrop-blur-lg border border-purple-500/20 flex flex-col overflow-hidden animate-scale-in max-h-[60vh]">
             <div className="flex-1 p-6 overflow-y-auto space-y-4 custom-scrollbar">
               {messages.length === 0 && (
                 <div className="text-center text-gray-400 mt-20 animate-fade-in">
@@ -99,9 +112,12 @@ const Chat = () => {
                       animationFillMode: 'forwards'
                     }}
                   >
-                    <pre className="text-sm whitespace-pre-wrap font-mono">
+                    <pre className="text-sm whitespace-pre-wrap font-mono break-words">
                       {message.displayContent || message.content}
-                      {message.role === 'assistant' && message.displayContent !== message.content && (
+                      {message.role === 'assistant' && message.displayContent === '▋' && (
+                        <span className="inline-block animate-pulse">▋</span>
+                      )}
+                      {message.role === 'assistant' && message.displayContent !== message.content && message.displayContent !== '▋' && (
                         <span className="inline-block w-1 h-4 ml-1 bg-purple-500 animate-pulse" />
                       )}
                     </pre>
@@ -139,6 +155,6 @@ const Chat = () => {
       <Footer />
     </div>
   );
-}
+};
 
 export default Chat;
