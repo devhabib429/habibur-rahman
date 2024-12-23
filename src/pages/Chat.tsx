@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, SendHorizontal, MessageSquare } from "lucide-react";
+import { Loader2, SendHorizontal, MessageSquare, Copy, Check } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -13,6 +13,7 @@ const Chat = () => {
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string, displayContent?: string }>>([]);
   const { toast } = useToast();
   const [isTyping, setIsTyping] = useState(false);
+  const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null);
 
   const typeMessage = async (message: string, index: number) => {
     setIsTyping(true);
@@ -28,6 +29,71 @@ const Chat = () => {
     setIsTyping(false);
   };
 
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopiedSnippet(text);
+      setTimeout(() => setCopiedSnippet(null), 2000);
+      toast({
+        title: "Copied to clipboard",
+        description: "Code snippet has been copied successfully!",
+      });
+    } catch (err) {
+      toast({
+        title: "Failed to copy",
+        description: "Please try again",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const formatMessage = (content: string) => {
+    const codeBlockRegex = /```(\w*)\n([\s\S]*?)```/g;
+    const paragraphRegex = /\n\n/g;
+    
+    let formattedContent = content;
+    let codeBlocks: string[] = [];
+    
+    // Replace code blocks with placeholders
+    formattedContent = formattedContent.replace(codeBlockRegex, (_, language, code) => {
+      codeBlocks.push(code.trim());
+      return `__CODE_BLOCK_${codeBlocks.length - 1}__`;
+    });
+    
+    // Split into paragraphs
+    const paragraphs = formattedContent.split(paragraphRegex);
+    
+    return paragraphs.map(paragraph => {
+      // Replace code block placeholders with actual formatted code blocks
+      if (paragraph.startsWith('__CODE_BLOCK_')) {
+        const index = parseInt(paragraph.replace('__CODE_BLOCK_', '').replace('__', ''));
+        const code = codeBlocks[index];
+        return (
+          <div key={index} className="relative my-4 group">
+            <div className="absolute right-2 top-2 z-10">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => copyToClipboard(code)}
+                className="h-8 w-8 bg-gray-800/50 hover:bg-gray-700/50"
+              >
+                {copiedSnippet === code ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4 text-gray-400" />
+                )}
+              </Button>
+            </div>
+            <pre className="relative bg-gray-900/50 p-4 rounded-lg overflow-x-auto">
+              <code className="text-sm font-mono text-gray-200">{code}</code>
+            </pre>
+          </div>
+        );
+      }
+      return <p key={paragraph.slice(0, 20)} className="mb-4 leading-relaxed">{paragraph}</p>;
+    });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isTyping) return;
@@ -38,11 +104,10 @@ const Chat = () => {
       setMessages(prev => [...prev, { role: 'user', content: userMessage, displayContent: userMessage }]);
       setInput("");
 
-      // Add a temporary loading message
       setMessages(prev => [...prev, { 
         role: 'assistant', 
         content: '', 
-        displayContent: '▋' // Blinking cursor while waiting
+        displayContent: '▋'
       }]);
 
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
@@ -51,17 +116,14 @@ const Chat = () => {
 
       if (error) throw error;
 
-      // Remove the loading message and add the real response
       setMessages(prev => {
-        const newMessages = prev.slice(0, -1); // Remove loading message
+        const newMessages = prev.slice(0, -1);
         return [...newMessages, { role: 'assistant' as const, content: data.response, displayContent: '' }];
       });
       
-      // Start typing animation for the new message
       typeMessage(data.response, messages.length + 1);
     } catch (error) {
       console.error('Error:', error);
-      // Remove the loading message on error
       setMessages(prev => prev.slice(0, -1));
       toast({
         title: "Error",
@@ -112,15 +174,13 @@ const Chat = () => {
                       animationFillMode: 'forwards'
                     }}
                   >
-                    <pre className="text-sm whitespace-pre-wrap font-mono break-words">
-                      {message.displayContent || message.content}
-                      {message.role === 'assistant' && message.displayContent === '▋' && (
-                        <span className="inline-block animate-pulse">▋</span>
-                      )}
-                      {message.role === 'assistant' && message.displayContent !== message.content && message.displayContent !== '▋' && (
-                        <span className="inline-block w-1 h-4 ml-1 bg-purple-500 animate-pulse" />
-                      )}
-                    </pre>
+                    {message.displayContent === '▋' ? (
+                      <span className="inline-block animate-pulse">▋</span>
+                    ) : (
+                      <div className="prose prose-invert max-w-none">
+                        {formatMessage(message.displayContent || message.content)}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
