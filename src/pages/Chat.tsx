@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export default function Chat() {
+const Chat = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string, displayContent?: string }>>([]);
@@ -99,12 +99,12 @@ export default function Chat() {
                       animationFillMode: 'forwards'
                     }}
                   >
-                    <p className="text-sm whitespace-pre-wrap">
+                    <pre className="text-sm whitespace-pre-wrap font-mono">
                       {message.displayContent || message.content}
                       {message.role === 'assistant' && message.displayContent !== message.content && (
                         <span className="inline-block w-1 h-4 ml-1 bg-purple-500 animate-pulse" />
                       )}
-                    </p>
+                    </pre>
                   </div>
                 </div>
               ))}
@@ -140,3 +140,5 @@ export default function Chat() {
     </div>
   );
 }
+
+export default Chat;

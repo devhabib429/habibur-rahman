@@ -15,30 +15,29 @@ serve(async (req) => {
     const { prompt } = await req.json()
     const hf = new HfInference(Deno.env.get('HUGGING_FACE_ACCESS_TOKEN'))
     
-    // Enhanced system prompt for more complete responses
-    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. 
-    Please provide detailed, accurate, and complete responses to user queries. 
-    Make sure to:
-    - Address all parts of the question
-    - Provide relevant examples when appropriate
-    - Explain complex concepts clearly
-    - Be concise but thorough`
+    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide detailed, accurate, and complete responses.`
     
     const response = await hf.textGeneration({
       model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
       inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
       parameters: {
-        max_new_tokens: 1000, // Increased token limit for more complete responses
+        max_new_tokens: 2000, // Increased token limit for more complete responses
         temperature: 0.7,
         top_p: 0.95,
         repetition_penalty: 1.15
       }
     })
 
-    console.log('Generated response:', response.generated_text)
+    // Clean up the response by removing the system prompt and instruction tags
+    let cleanResponse = response.generated_text
+      .replace(systemPrompt, '')
+      .replace('<s>[INST]', '')
+      .replace('[/INST]', '')
+      .replace('User:', '')
+      .trim()
 
     return new Response(
-      JSON.stringify({ response: response.generated_text }),
+      JSON.stringify({ response: cleanResponse }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
