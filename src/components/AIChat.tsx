@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send, Loader2, Copy } from "lucide-react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { SyntaxHighlighter, oneDark } from "react-syntax-highlighter";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
 
 const AIChat = () => {
@@ -12,6 +13,15 @@ const AIChat = () => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success("Code copied to clipboard!");
+    } catch (err) {
+      toast.error("Failed to copy code");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
