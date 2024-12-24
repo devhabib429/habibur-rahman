@@ -8,9 +8,14 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { toast } from "sonner";
 
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
 const AIChat = () => {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
 
@@ -23,7 +28,7 @@ const AIChat = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input) return;
 
@@ -61,7 +66,7 @@ const AIChat = () => {
             }`}>
               <ReactMarkdown
                 components={{
-                  code({ node, inline, className, children, ...props }) {
+                  code({node, inline, className, children, ...props}) {
                     const match = /language-(\w+)/.exec(className || '');
                     return !inline ? (
                       <div className="relative">
@@ -72,11 +77,11 @@ const AIChat = () => {
                           <Copy className="w-4 h-4" />
                         </button>
                         <SyntaxHighlighter
-                          {...props}
                           style={oneDark}
-                          language={match ? match[1] : 'text'}
+                          language={match?.[1] || 'text'}
                           PreTag="div"
                           className="rounded-md p-4 my-2"
+                          {...props}
                         >
                           {String(children).replace(/\n$/, '')}
                         </SyntaxHighlighter>
@@ -87,7 +92,7 @@ const AIChat = () => {
                       </code>
                     );
                   },
-                  p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
+                  p: ({children}) => <p className="mb-4 last:mb-0">{children}</p>,
                 }}
               >
                 {message.content}
