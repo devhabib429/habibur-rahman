@@ -1,74 +1,118 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Send, Loader2, Copy } from "lucide-react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { SyntaxHighlighter, oneDark } from "react-syntax-highlighter";
+import { toast } from "sonner";
 
-export default function AIChat() {
+const AIChat = () => {
   const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant', content: string }>>([]);
-  const { toast } = useToast();
+  const [isTyping, setIsTyping] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input) return;
 
-    try {
-      setIsLoading(true);
-      const userMessage = input.trim();
-      setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-      setInput("");
+    setMessages((prev) => [...prev, { role: "user", content: input }]);
+    setInput("");
+    setIsLoading(true);
+    setIsTyping(true);
 
-      const { data, error } = await supabase.functions.invoke('chat-with-ai', {
-        body: { prompt: userMessage }
-      });
-
-      if (error) throw error;
-
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }]);
-    } catch (error) {
-      console.error('Error:', error);
-      toast({
-        title: "Error",
-        description: "Failed to get response from AI. Please try again.",
-        variant: "destructive"
-      });
-    } finally {
+    // Simulate AI response
+    setTimeout(() => {
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: "This is a simulated response." },
+      ]);
       setIsLoading(false);
-    }
+      setIsTyping(false);
+    }, 1000);
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4 space-y-4">
-      <div className="bg-white/5 rounded-lg p-4 space-y-4 min-h-[300px] max-h-[500px] overflow-y-auto">
+    <div className="flex flex-col h-[calc(100vh-6rem)] max-w-5xl mx-auto">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
         {messages.map((message, index) => (
-          <div
+          <motion.div
             key={index}
-            className={`p-3 rounded-lg ${
-              message.role === 'user' 
-                ? 'bg-purple-500/10 ml-auto max-w-[80%]' 
-                : 'bg-gray-500/10 mr-auto max-w-[80%]'
-            }`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className={`flex ${message.role === 'assistant' ? 'justify-start' : 'justify-end'}`}
           >
-            <p className="text-sm text-gray-200">{message.content}</p>
-          </div>
+            <div className={`max-w-[80%] p-4 rounded-lg ${
+              message.role === 'assistant' 
+                ? 'bg-gray-800/50 text-white' 
+                : 'bg-primary/10 text-white'
+            }`}>
+              <ReactMarkdown
+                components={{
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || '');
+                    return !inline ? (
+                      <div className="relative">
+                        <button
+                          onClick={() => copyToClipboard(String(children))}
+                          className="absolute right-2 top-2 text-gray-400 hover:text-white"
+                        >
+                          <Copy className="w-4 h-4" />
+                        </button>
+                        <SyntaxHighlighter
+                          {...props}
+                          style={oneDark}
+                          language={match ? match[1] : 'text'}
+                          PreTag="div"
+                          className="rounded-md p-4 my-2"
+                        >
+                          {String(children).replace(/\n$/, '')}
+                        </SyntaxHighlighter>
+                      </div>
+                    ) : (
+                      <code className="bg-gray-800 rounded px-1" {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                  p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
+                }}
+              >
+                {message.content}
+              </ReactMarkdown>
+            </div>
+          </motion.div>
         ))}
+        {isTyping && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex justify-start"
+          >
+            <div className="bg-gray-800/50 p-4 rounded-lg">
+              <span className="inline-block w-2 h-4 bg-primary animate-pulse">▋</span>
+            </div>
+          </motion.div>
+        )}
       </div>
-
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <Input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message..."
-          disabled={isLoading}
-          className="flex-1"
-        />
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send"}
-        </Button>
-      </form>
+      
+      <div className="p-4 border-t border-gray-800">
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            className="flex-1"
+          />
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+          </Button>
+        </form>
+      </div>
     </div>
   );
-}
+};
+
+export default AIChat;

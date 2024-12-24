@@ -65,18 +65,20 @@ const Timeline = () => {
           viewport={{ once: true }}
           className="relative"
         >
-          {/* Vertical line with gradient */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-primary via-secondary to-accent" />
+          {/* Vertical line with gradient - hidden on mobile */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-primary via-secondary to-accent hidden md:block" />
           
           {experiences.map((exp, index) => (
             <motion.div
               key={exp.title}
               variants={itemVariants}
-              className={`flex items-center mb-16 ${
-                index % 2 === 0 ? "flex-row" : "flex-row-reverse"
+              className={`flex flex-col md:flex-row items-center mb-16 ${
+                index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
               }`}
             >
-              <div className={`w-1/2 ${index % 2 === 0 ? "text-right pr-8" : "text-left pl-8"}`}>
+              <div className={`w-full md:w-1/2 ${
+                index % 2 === 0 ? "md:text-right md:pr-8" : "md:text-left md:pl-8"
+              } mb-4 md:mb-0`}>
                 <motion.div 
                   whileHover={{ scale: 1.05 }}
                   className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-6 hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-primary/20"
@@ -98,12 +100,12 @@ const Timeline = () => {
               <motion.div 
                 whileHover={{ scale: 1.2, rotate: 360 }}
                 transition={{ duration: 0.5 }}
-                className="relative z-10 flex items-center justify-center w-12 h-12 bg-primary rounded-full border-4 border-gray-900 text-white"
+                className="relative z-10 flex items-center justify-center w-12 h-12 bg-primary rounded-full border-4 border-gray-900 text-white my-4 md:my-0"
               >
                 {exp.icon}
               </motion.div>
               
-              <div className="w-1/2" />
+              <div className="w-full md:w-1/2" />
             </motion.div>
           ))}
         </motion.div>
