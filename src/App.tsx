@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import Resources from "./pages/Resources";
-import Dashboard from "./pages/Dashboard";
 import ProjectForm from "./pages/ProjectForm";
+import Resources from "./pages/Resources";
 import Chat from "./pages/Chat";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Index />} />
-        <Route path="/resources" element={<Resources />} />
-        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/project-form" element={<ProjectForm />} />
+        <Route path="/resources" element={<Resources />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </Router>
   );
