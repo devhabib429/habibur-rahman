@@ -33,7 +33,6 @@ const EventBanner = () => {
       console.log('Banner data received:', data);
       return data as BannerData;
     },
-    retry: false
   });
 
   if (isLoading) {
