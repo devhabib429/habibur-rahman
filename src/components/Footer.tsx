@@ -8,7 +8,7 @@ const Footer = () => {
           <h3 className="text-xl font-semibold">Connect With Me</h3>
           <div className="flex gap-8">
             <a
-              href="https://linkedin.com/in/your-profile"
+              href="https://www.linkedin.com/in/habibur-rahman-b59038195/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"
@@ -16,7 +16,7 @@ const Footer = () => {
               <Linkedin className="w-6 h-6" />
             </a>
             <a
-              href="https://github.com/your-profile"
+              href="https://x.com/HRahman429"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"

@@ -9,13 +9,13 @@ const Navbar = () => {
   const socialLinks = [
     { 
       icon: <Linkedin className="h-5 w-5" />, 
-      href: "https://linkedin.com/in/your-profile",
+      href: "https://www.linkedin.com/in/habibur-rahman-b59038195/",
       label: "LinkedIn"
     },
     { 
       icon: <Github className="h-5 w-5" />, 
-      href: "https://github.com/your-profile",
-      label: "GitHub"
+      href: "https://x.com/HRahman429",
+      label: "X (Twitter)"
     },
     { 
       icon: <Mail className="h-5 w-5" />, 
