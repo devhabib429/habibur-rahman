@@ -18,21 +18,28 @@ const EventBanner = () => {
     queryKey: ['eventBanner'],
     queryFn: async () => {
       console.log('Fetching banner data...');
-      const { data, error } = await supabase
-        .from('event_banners')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .single();
-      
-      if (error) {
-        console.error('Error fetching banner:', error);
-        throw error;
+      try {
+        const { data, error } = await supabase
+          .from('event_banners')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+        
+        if (error) {
+          console.error('Error fetching banner:', error);
+          throw error;
+        }
+        
+        console.log('Banner data received:', data);
+        return data as BannerData;
+      } catch (err) {
+        console.error('Failed to fetch banner data:', err);
+        throw err;
       }
-      
-      console.log('Banner data received:', data);
-      return data as BannerData;
     },
+    retry: 1,
+    staleTime: 1000 * 60 * 5, // Cache for 5 minutes
   });
 
   if (isLoading) {
