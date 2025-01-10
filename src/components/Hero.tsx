@@ -34,15 +34,12 @@ const Hero = () => {
 
   return (
     <section className="pt-16 min-h-[90vh] flex items-center justify-center relative overflow-hidden bg-white">
-      {/* Enhanced animated background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-50 via-white to-gray-50 opacity-50" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Enhanced Floating Icons */}
           <div className="relative h-24 mb-8">
             <div className="absolute inset-0 flex justify-center items-center">
               {floatingIcons.map((item, index) => (
@@ -87,7 +84,7 @@ const Hero = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-12 font-['Inter'] leading-relaxed"
+            className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-12 font-['Inter'] leading-relaxed"
           >
             Elevate your business with seamless DevOps integration and ERPNext solutions. From CI/CD pipelines to custom ERP modules, we deliver end-to-end digital transformation.
           </motion.p>
