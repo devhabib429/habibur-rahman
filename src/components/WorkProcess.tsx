@@ -33,7 +33,7 @@ const WorkProcess = () => {
   ];
 
   return (
-    <section className="py-20 bg-gray-800/50 backdrop-blur-sm">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -41,8 +41,8 @@ const WorkProcess = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl font-bold mb-4 text-white">How I Work</h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4 text-black">How I Work</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
             My structured approach ensures successful project delivery while maintaining clear communication throughout the process.
           </p>
         </motion.div>
@@ -56,13 +56,13 @@ const WorkProcess = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className="relative"
             >
-              <div className="bg-gray-700/30 backdrop-blur-sm p-6 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 text-center h-full border border-gray-600/30 hover:border-primary/50">
-                <div className="mb-4 text-primary flex justify-center">{step.icon}</div>
-                <h3 className="text-xl font-semibold mb-2 text-white">{step.title}</h3>
-                <p className="text-gray-300 text-sm">{step.description}</p>
+              <div className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1 text-center h-full border border-gray-200 hover:border-gray-300">
+                <div className="mb-4 text-black flex justify-center">{step.icon}</div>
+                <h3 className="text-xl font-semibold mb-2 text-black">{step.title}</h3>
+                <p className="text-gray-600 text-sm">{step.description}</p>
               </div>
               {index < steps.length - 1 && (
-                <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-primary/50" />
+                <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 text-gray-400" />
               )}
             </motion.div>
           ))}
@@ -77,7 +77,7 @@ const WorkProcess = () => {
           <Link to="/start-project">
             <Button
               size="lg"
-              className="bg-primary hover:bg-primary/90"
+              className="bg-black hover:bg-gray-800 text-white"
             >
               Start a Project
             </Button>

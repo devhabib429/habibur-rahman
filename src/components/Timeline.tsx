@@ -48,12 +48,12 @@ const Timeline = () => {
   };
 
   return (
-    <section className="py-20 relative">
+    <section className="py-20 relative bg-white">
       <div className="container mx-auto px-4">
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold text-center mb-16 font-['Space_Grotesk'] text-white"
+          className="text-4xl font-bold text-center mb-16 font-['Space_Grotesk'] text-black"
         >
           Experience Timeline
         </motion.h2>
@@ -65,8 +65,8 @@ const Timeline = () => {
           viewport={{ once: true }}
           className="relative"
         >
-          {/* Vertical line with gradient - hidden on mobile */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-primary via-secondary to-accent hidden md:block" />
+          {/* Vertical line with gradient */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-gray-200 via-gray-300 to-gray-200 hidden md:block" />
           
           {experiences.map((exp, index) => (
             <motion.div
@@ -81,26 +81,26 @@ const Timeline = () => {
               } mb-4 md:mb-0`}>
                 <motion.div 
                   whileHover={{ scale: 1.05 }}
-                  className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-6 hover:border-primary/50 transition-all duration-300 shadow-lg hover:shadow-primary/20"
+                  className="bg-white backdrop-blur-sm border border-gray-200 rounded-xl p-6 hover:border-gray-300 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   <motion.span 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="text-primary font-bold text-xl mb-2 block font-['Space_Grotesk']"
+                    className="text-black font-bold text-xl mb-2 block font-['Space_Grotesk']"
                   >
                     {exp.year}
                   </motion.span>
-                  <h3 className="text-white text-lg font-bold mb-2 font-['Space_Grotesk']">{exp.title}</h3>
-                  <h4 className="text-primary text-md mb-2 font-['Space_Grotesk']">{exp.company}</h4>
-                  <p className="text-gray-300 font-['Inter']">{exp.description}</p>
+                  <h3 className="text-black text-lg font-bold mb-2 font-['Space_Grotesk']">{exp.title}</h3>
+                  <h4 className="text-gray-600 text-md mb-2 font-['Space_Grotesk']">{exp.company}</h4>
+                  <p className="text-gray-500 font-['Inter']">{exp.description}</p>
                 </motion.div>
               </div>
               
               <motion.div 
                 whileHover={{ scale: 1.2, rotate: 360 }}
                 transition={{ duration: 0.5 }}
-                className="relative z-10 flex items-center justify-center w-12 h-12 bg-primary rounded-full border-4 border-gray-900 text-white my-4 md:my-0"
+                className="relative z-10 flex items-center justify-center w-12 h-12 bg-black rounded-full border-4 border-white text-white my-4 md:my-0 shadow-lg"
               >
                 {exp.icon}
               </motion.div>
