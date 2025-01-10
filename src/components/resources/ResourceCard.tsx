@@ -31,7 +31,7 @@ const ResourceCard = ({ resource, index }: ResourceCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className="group block p-6 bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm rounded-xl border border-gray-700/30 hover:border-primary/50 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5 hover:translate-y-[-2px]"
+      className="group block p-6 bg-white rounded-xl border border-black/10 hover:border-black/30 transition-all duration-300 hover:shadow-lg hover:shadow-black/5 hover:translate-y-[-2px]"
     >
       {!isBlog && resource.thumbnail && (
         <div className="relative mb-4 rounded-lg overflow-hidden group-hover:shadow-xl transition-all duration-300">
@@ -51,13 +51,13 @@ const ResourceCard = ({ resource, index }: ResourceCardProps) => {
       )}
       
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-xl font-semibold text-white group-hover:text-primary transition-colors line-clamp-2">
+        <h3 className="text-xl font-semibold text-black group-hover:text-gray-800 transition-colors line-clamp-2">
           {resource.title}
         </h3>
-        <ExternalLink className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors flex-shrink-0 ml-2" />
+        <ExternalLink className="w-5 h-5 text-gray-600 group-hover:text-black transition-colors flex-shrink-0 ml-2" />
       </div>
       
-      <p className="text-gray-400 mb-4 line-clamp-2 group-hover:text-gray-300 transition-colors">
+      <p className="text-gray-600 mb-4 line-clamp-2 group-hover:text-gray-800 transition-colors">
         {resource.description}
       </p>
       
@@ -66,7 +66,7 @@ const ResourceCard = ({ resource, index }: ResourceCardProps) => {
           {resource.tags.map((tag, idx) => (
             <span
               key={idx}
-              className="px-3 py-1 text-xs rounded-full bg-primary/10 text-primary border border-primary/20 transition-colors group-hover:bg-primary/20"
+              className="px-3 py-1 text-xs rounded-full bg-black/5 text-black border border-black/10 transition-colors group-hover:bg-black/10"
             >
               {tag}
             </span>
@@ -84,14 +84,14 @@ const ResourceCard = ({ resource, index }: ResourceCardProps) => {
               </span>
             )}
             {resource.date && (
-              <span className="text-gray-500 group-hover:text-gray-400 transition-colors">
+              <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
                 {resource.date}
               </span>
             )}
           </>
         ) : (
           resource.views && (
-            <span className="text-gray-500 group-hover:text-gray-400 transition-colors">
+            <span className="text-gray-500 group-hover:text-gray-700 transition-colors">
               {resource.views} views
             </span>
           )
