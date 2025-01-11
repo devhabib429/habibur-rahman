@@ -1,12 +1,34 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Terminal, Server, Database, Cloud, Code2, Workflow } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [text, setText] = useState("");
   const fullText = "DevOps & ERPNext Solutions";
   const [index, setIndex] = useState(0);
+
+  // Sample schedule data - in a real app this would come from your backend
+  const scheduleItems = [
+    {
+      id: 1,
+      title: "ERPNext Implementation Workshop",
+      date: "April 15, 2024",
+      time: "10:00 AM PST",
+    },
+    {
+      id: 2,
+      title: "DevOps Best Practices Webinar",
+      date: "April 20, 2024",
+      time: "2:00 PM PST",
+    },
+    {
+      id: 3,
+      title: "Cloud Migration Strategy Session",
+      date: "April 25, 2024",
+      time: "11:00 AM PST",
+    }
+  ];
 
   useEffect(() => {
     if (index < fullText.length) {
@@ -23,15 +45,6 @@ const Hero = () => {
     newsletterSection?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const floatingIcons = [
-    { icon: <Terminal className="w-8 h-8" />, delay: 0 },
-    { icon: <Server className="w-8 h-8" />, delay: 0.2 },
-    { icon: <Database className="w-8 h-8" />, delay: 0.4 },
-    { icon: <Cloud className="w-8 h-8" />, delay: 0.6 },
-    { icon: <Code2 className="w-8 h-8" />, delay: 0.8 },
-    { icon: <Workflow className="w-8 h-8" />, delay: 1 }
-  ];
-
   return (
     <section className="pt-16 min-h-[90vh] flex items-center justify-center relative overflow-hidden bg-white">
       <div className="absolute inset-0 overflow-hidden">
@@ -40,36 +53,6 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="relative h-24 mb-8">
-            <div className="absolute inset-0 flex justify-center items-center">
-              {floatingIcons.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ 
-                    y: [0, -10, 0],
-                    opacity: 1
-                  }}
-                  transition={{
-                    y: {
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: item.delay
-                    },
-                    opacity: {
-                      duration: 0.5,
-                      delay: item.delay
-                    }
-                  }}
-                  className="mx-2 text-gray-800 hover:text-black transition-colors duration-300"
-                >
-                  {item.icon}
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -88,6 +71,40 @@ const Hero = () => {
           >
             Elevate your business with seamless DevOps integration and ERPNext solutions. From CI/CD pipelines to custom ERP modules, we deliver end-to-end digital transformation.
           </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-8 mb-12"
+          >
+            <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
+              <h3 className="text-xl font-semibold mb-4 text-black">Upcoming Events</h3>
+              <div className="space-y-4">
+                {scheduleItems.map((item) => (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  >
+                    <div className="flex items-start space-x-3">
+                      <Calendar className="w-5 h-5 text-gray-600 mt-1" />
+                      <div className="text-left">
+                        <h4 className="font-medium text-black">{item.title}</h4>
+                        <p className="text-sm text-gray-600">{item.date}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2 text-gray-600">
+                      <Clock className="w-4 h-4" />
+                      <span className="text-sm">{item.time}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
