@@ -136,25 +136,25 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900">
+    <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
       
       <main className="flex-1 container mx-auto px-4 py-8 mt-16 flex flex-col">
         <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
           <div className="mb-8 text-center animate-fade-in">
-            <h1 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3">
+            <h1 className="text-4xl font-bold text-black mb-4 flex items-center justify-center gap-3">
               <MessageSquare className="h-8 w-8 animate-bounce" />
               Chat with AI Assistant
             </h1>
-            <p className="text-purple-300 animate-pulse">Powered by Mixtral-8x7B</p>
+            <p className="text-gray-600">Powered by Mixtral-8x7B</p>
           </div>
           
-          <div className="flex-1 bg-gray-800/30 rounded-2xl shadow-2xl backdrop-blur-lg border border-purple-500/20 flex flex-col overflow-hidden animate-scale-in max-h-[60vh]">
+          <div className="flex-1 bg-white rounded-2xl shadow-lg backdrop-blur-lg border border-gray-200 flex flex-col overflow-hidden animate-scale-in max-h-[60vh]">
             <div className="flex-1 p-6 overflow-y-auto space-y-4 custom-scrollbar">
               {messages.length === 0 && (
                 <div className="text-center text-gray-400 mt-20 animate-fade-in">
-                  <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50 animate-pulse text-purple-400" />
-                  <p className="text-purple-300">Start a conversation with the AI assistant</p>
+                  <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50 animate-pulse text-gray-400" />
+                  <p className="text-gray-600">Start a conversation with the AI assistant</p>
                 </div>
               )}
               {messages.map((message, index) => (
@@ -163,10 +163,10 @@ const Chat = () => {
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`p-4 rounded-2xl max-w-[80%] animate-fade-in shadow-lg ${
+                    className={`p-4 rounded-2xl max-w-[80%] animate-fade-in shadow-sm ${
                       message.role === 'user' 
-                        ? 'bg-purple-500/20 text-white backdrop-blur-sm border border-purple-500/30 hover:bg-purple-500/30 transition-colors' 
-                        : 'bg-gray-700/50 text-gray-200 backdrop-blur-sm border border-gray-600/30 hover:bg-gray-700/70 transition-colors'
+                        ? 'bg-black text-white' 
+                        : 'bg-gray-100 text-black border border-gray-200'
                     }`}
                     style={{
                       animation: `fade-in 0.3s ease-out ${index * 0.1}s`,
@@ -177,7 +177,7 @@ const Chat = () => {
                     {message.displayContent === '▋' ? (
                       <span className="inline-block animate-pulse">▋</span>
                     ) : (
-                      <div className="prose prose-invert max-w-none">
+                      <div className="prose prose-sm max-w-none">
                         {formatMessage(message.displayContent || message.content)}
                       </div>
                     )}
@@ -186,19 +186,19 @@ const Chat = () => {
               ))}
             </div>
             
-            <form onSubmit={handleSubmit} className="p-4 border-t border-purple-500/20 animate-fade-in bg-gray-800/50 backdrop-blur-lg">
+            <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 animate-fade-in bg-white">
               <div className="flex gap-2 items-center">
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message..."
                   disabled={isLoading || isTyping}
-                  className="flex-1 bg-gray-700/50 border-purple-500/30 focus:border-purple-500 text-white placeholder:text-gray-400 transition-all duration-200 hover:bg-gray-700/70 focus:ring-2 focus:ring-purple-500/50 rounded-xl"
+                  className="flex-1 bg-white border-gray-200 focus:border-black text-black placeholder:text-gray-400 transition-all duration-200 hover:border-gray-300 focus:ring-2 focus:ring-black/10 rounded-xl"
                 />
                 <Button 
                   type="submit" 
                   disabled={isLoading || isTyping}
-                  className="bg-purple-500 hover:bg-purple-600 text-white transition-all duration-200 hover:scale-105 active:scale-95 rounded-xl px-6"
+                  className="bg-black hover:bg-gray-800 text-white transition-all duration-200 hover:scale-105 active:scale-95 rounded-xl px-6"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
