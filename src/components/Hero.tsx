@@ -85,13 +85,13 @@ const Hero = () => {
               <span className="relative z-10">Start Your Project</span>
               <div className="absolute inset-0 bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </Link>
-            <button
-              onClick={scrollToNewsletter}
+            <Link
+              to="/erpnext-updates"
               className="group relative overflow-hidden bg-gray-100 hover:bg-gray-200 text-black px-8 py-4 rounded-xl text-lg font-medium transition-all duration-500 transform hover:scale-105 hover:shadow-lg border border-gray-200"
             >
               <span className="relative z-10">Get ERPNext Updates</span>
               <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 opacity-0 group-hover:opacity-50 transition-opacity duration-500" />
-            </button>
+            </Link>
           </motion.div>
 
           <motion.div
