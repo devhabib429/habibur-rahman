@@ -26,7 +26,7 @@ const Roles = () => {
   ];
 
   return (
-    <section className="py-20">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <motion.div 
           initial={{ opacity: 0 }}
@@ -40,15 +40,15 @@ const Roles = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/30 rounded-xl p-6 hover:border-primary/50 transition-all duration-300"
+              className="bg-white border border-gray-100 rounded-xl p-6 hover:border-gray-200 transition-all duration-300 hover:shadow-lg group"
             >
-              <div className="text-primary mb-4">
+              <div className="text-black mb-4 group-hover:scale-110 transition-transform duration-300">
                 {role.icon}
               </div>
-              <h3 className="text-xl font-bold text-white mb-2 font-['Space_Grotesk']">
+              <h3 className="text-xl font-bold text-black mb-2 font-['Space_Grotesk']">
                 {role.title}
               </h3>
-              <p className="text-gray-300 text-sm font-['Inter']">
+              <p className="text-gray-600 text-sm font-['Inter']">
                 {role.description}
               </p>
             </motion.div>
