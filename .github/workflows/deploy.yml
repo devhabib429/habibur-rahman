@@ -30,8 +30,6 @@ jobs:
         port: 22
         script: |
           cd /home/ubuntu/habibur-rahman
-          rm -rf *
           git pull
           npm install
-          npm audit fix
           nohup npm run dev > app.log 2>&1 &
