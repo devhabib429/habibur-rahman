@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      devops_updates: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          link: string | null
+          tags: string[] | null
+          title: string
+          update_type: string
+          version: string | null
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          link?: string | null
+          tags?: string[] | null
+          title: string
+          update_type: string
+          version?: string | null
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          link?: string | null
+          tags?: string[] | null
+          title?: string
+          update_type?: string
+          version?: string | null
+        }
+        Relationships: []
+      }
       erpnext_updates: {
         Row: {
           created_at: string
