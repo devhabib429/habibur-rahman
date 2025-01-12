@@ -24,7 +24,7 @@ import { useForm } from "react-hook-form";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ScheduleItem {
-  id: number;
+  id: string;
   title: string;
   date: string;
   time: string;
@@ -107,7 +107,7 @@ const ScheduleManager = () => {
   });
 
   const deleteMutation = useMutation({
-    mutationFn: async (id: number) => {
+    mutationFn: async (id: string) => {
       const { error } = await supabase
         .from('schedule_items')
         .delete()
@@ -142,7 +142,7 @@ const ScheduleManager = () => {
     setIsOpen(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = (id: string) => {
     if (window.confirm('Are you sure you want to delete this schedule item?')) {
       deleteMutation.mutate(id);
     }
