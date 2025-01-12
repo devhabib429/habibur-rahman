@@ -17,7 +17,7 @@ const EventBanner = () => {
   const { data: banner, isLoading, error } = useQuery({
     queryKey: ['eventBanner'],
     queryFn: async () => {
-      console.log('Fetching banner data...');
+      console.log('Fetching banner data in EventBanner...');
       try {
         const { data, error } = await supabase
           .from('event_banners')
@@ -27,11 +27,11 @@ const EventBanner = () => {
           .single();
         
         if (error) {
-          console.error('Error fetching banner:', error);
+          console.error('Error fetching banner in EventBanner:', error);
           throw error;
         }
         
-        console.log('Banner data received:', data);
+        console.log('Banner data received in EventBanner:', data);
         return data as BannerData;
       } catch (err) {
         console.error('Failed to fetch banner data:', err);

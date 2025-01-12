@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 
 interface BannerData {
   id: number;
@@ -33,6 +33,7 @@ const BannerManager = () => {
   const { data: banner, isLoading } = useQuery({
     queryKey: ['eventBanner'],
     queryFn: async () => {
+      console.log('Fetching banner data in BannerManager...');
       const { data, error } = await supabase
         .from('event_banners')
         .select('*')
@@ -40,7 +41,12 @@ const BannerManager = () => {
         .limit(1)
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching banner in BannerManager:', error);
+        throw error;
+      }
+      
+      console.log('Banner data received in BannerManager:', data);
       return data as BannerData;
     },
     retry: false
@@ -54,6 +60,7 @@ const BannerManager = () => {
 
   const updateBanner = useMutation({
     mutationFn: async (newData: BannerData) => {
+      console.log('Updating banner with data:', newData);
       const { error } = await supabase
         .from('event_banners')
         .update({
@@ -65,7 +72,10 @@ const BannerManager = () => {
         })
         .eq('id', newData.id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating banner:', error);
+        throw error;
+      }
       return newData;
     },
     onSuccess: () => {
@@ -76,12 +86,12 @@ const BannerManager = () => {
       });
     },
     onError: (error) => {
+      console.error('Error in update mutation:', error);
       toast({
         title: "Error",
         description: "Failed to update banner",
         variant: "destructive",
       });
-      console.error('Error updating banner:', error);
     }
   });
 
