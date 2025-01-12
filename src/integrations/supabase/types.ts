@@ -195,6 +195,30 @@ export type Database = {
         }
         Relationships: []
       }
+      schedule_items: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          time: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          time: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          time?: string
+          title?: string
+        }
+        Relationships: []
+      }
       timeline_experiences: {
         Row: {
           company: string

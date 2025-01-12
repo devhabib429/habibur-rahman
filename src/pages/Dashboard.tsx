@@ -5,8 +5,9 @@ import HotTakesManager from "@/components/dashboard/HotTakesManager";
 import ResourcesManager from "@/components/dashboard/ResourcesManager";
 import TimelineManager from "@/components/dashboard/TimelineManager";
 import BannerManager from "@/components/dashboard/BannerManager";
+import ScheduleManager from "@/components/dashboard/ScheduleManager";
 import { motion } from "framer-motion";
-import { Sparkles, Layout, MessageSquare, BookOpen, History, Flag } from "lucide-react";
+import { Sparkles, Layout, MessageSquare, BookOpen, History, Flag, Calendar } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Dashboard = () => {
@@ -82,6 +83,14 @@ const Dashboard = () => {
                 <span className="hidden md:inline">Banner</span>
                 {isMobile && <span className="md:hidden">Ban</span>}
               </TabsTrigger>
+              <TabsTrigger 
+                value="schedule"
+                className="data-[state=active]:bg-[#8B5CF6] data-[state=active]:text-white px-4 md:px-6 py-2.5 rounded-lg flex items-center gap-2 text-sm font-medium transition-all duration-200 hover:bg-[#8B5CF6]/10 whitespace-nowrap"
+              >
+                <Calendar className="w-4 h-4 flex-shrink-0" />
+                <span className="hidden md:inline">Schedule</span>
+                {isMobile && <span className="md:hidden">Sched</span>}
+              </TabsTrigger>
             </TabsList>
           </div>
           
@@ -118,6 +127,12 @@ const Dashboard = () => {
             <TabsContent value="banner" className="mt-6">
               <div className="backdrop-blur-xl bg-[#1A1F2C]/50 p-4 md:p-8 rounded-xl border border-[#8B5CF6]/20 shadow-xl">
                 <BannerManager />
+              </div>
+            </TabsContent>
+
+            <TabsContent value="schedule" className="mt-6">
+              <div className="backdrop-blur-xl bg-[#1A1F2C]/50 p-4 md:p-8 rounded-xl border border-[#8B5CF6]/20 shadow-xl">
+                <ScheduleManager />
               </div>
             </TabsContent>
           </motion.div>
