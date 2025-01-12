@@ -32,4 +32,5 @@ jobs:
           cd /home/ubuntu/habibur-rahman
           git pull
           npm install
+          npm audit fix
           nohup npm run dev > app.log 2>&1 &
