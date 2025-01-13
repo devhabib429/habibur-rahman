@@ -178,7 +178,7 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">
+        <h2 className="text-2xl font-bold text-white">
           {type === 'erpnext' ? 'ERPNext' : 'DevOps'} Updates
         </h2>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -201,9 +201,9 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
               Add Update
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-white border border-gray-200">
+          <DialogContent className="bg-gray-900 border border-purple-500/20">
             <DialogHeader>
-              <DialogTitle className="text-gray-900">
+              <DialogTitle className="text-white">
                 {editingUpdate ? 'Edit Update' : 'Add New Update'}
               </DialogTitle>
             </DialogHeader>
@@ -214,9 +214,9 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900">Title</FormLabel>
+                      <FormLabel className="text-white">Title</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" />
+                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -227,9 +227,9 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900">Description</FormLabel>
+                      <FormLabel className="text-white">Description</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" />
+                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -240,11 +240,11 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                   name="update_type"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900">Update Type</FormLabel>
+                      <FormLabel className="text-white">Update Type</FormLabel>
                       <FormControl>
                         <select 
                           {...field} 
-                          className="w-full bg-gray-100 border border-gray-300 rounded-md p-2 text-gray-900"
+                          className="w-full bg-gray-800 border border-purple-500/20 rounded-md p-2 text-white"
                         >
                           <option value="feature">Feature</option>
                           <option value="bugfix">Bug Fix</option>
@@ -261,9 +261,9 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                   name="version"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900">Version (Optional)</FormLabel>
+                      <FormLabel className="text-white">Version (Optional)</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" />
+                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -274,9 +274,9 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                   name="link"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900">Link (Optional)</FormLabel>
+                      <FormLabel className="text-white">Link (Optional)</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" />
+                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -287,7 +287,7 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                   name="tags"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-900">Tags (comma-separated)</FormLabel>
+                      <FormLabel className="text-white">Tags (comma-separated)</FormLabel>
                       <FormControl>
                         <Input 
                           value={field.value?.join(', ') || ''}
@@ -295,7 +295,7 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                             const tags = e.target.value.split(',').map(tag => tag.trim()).filter(Boolean);
                             field.onChange(tags);
                           }}
-                          className="bg-gray-100 border-gray-300 text-gray-900"
+                          className="bg-gray-800 border-purple-500/20 text-white"
                           placeholder="e.g. Security, Performance, UI"
                         />
                       </FormControl>
@@ -328,14 +328,14 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm"
+              className="bg-gray-800/50 backdrop-blur-sm border border-purple-500/20 rounded-lg p-4"
             >
               <div className="flex justify-between items-start">
                 <div className="space-y-2">
-                  <h3 className="text-lg font-semibold text-gray-900">{update.title}</h3>
-                  <p className="text-gray-600">{update.description}</p>
+                  <h3 className="text-lg font-semibold text-white">{update.title}</h3>
+                  <p className="text-gray-300">{update.description}</p>
                   {update.version && (
-                    <p className="text-sm text-gray-500">Version: {update.version}</p>
+                    <p className="text-sm text-gray-400">Version: {update.version}</p>
                   )}
                   {update.tags && update.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2">
@@ -351,7 +351,7 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
                       href={update.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 inline-flex items-center gap-1"
+                      className="text-sm text-purple-400 hover:text-purple-300"
                     >
                       Learn More →
                     </a>

@@ -129,8 +129,8 @@ const HotTakesManager = () => {
 
   return (
     <div className="space-y-8">
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border border-gray-200">
-        <h3 className="text-xl font-semibold text-gray-900 mb-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-gray-800/50 p-6 rounded-lg border border-gray-700">
+        <h3 className="text-xl font-semibold text-white mb-4">
           {isEditing ? "Edit Hot Take" : "Add New Hot Take"}
         </h3>
         
@@ -175,7 +175,7 @@ const HotTakesManager = () => {
         </div>
       </form>
 
-      <div className="rounded-md border border-gray-200 bg-white">
+      <div className="rounded-md border border-gray-700 bg-gray-800/50">
         <Table>
           <TableHeader>
             <TableRow>
@@ -188,9 +188,9 @@ const HotTakesManager = () => {
           <TableBody>
             {hotTakes?.map((take) => (
               <TableRow key={take.id}>
-                <TableCell className="text-gray-900">{take.category}</TableCell>
-                <TableCell className="text-gray-900">{take.opinion}</TableCell>
-                <TableCell className="text-gray-900">{take.explanation}</TableCell>
+                <TableCell className="text-white">{take.category}</TableCell>
+                <TableCell className="text-white">{take.opinion}</TableCell>
+                <TableCell className="text-white">{take.explanation}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button
