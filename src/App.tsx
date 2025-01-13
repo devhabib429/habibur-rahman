@@ -4,6 +4,8 @@ import ProjectForm from "./pages/ProjectForm";
 import Resources from "./pages/Resources";
 import Chat from "./pages/Chat";
 import Dashboard from "./pages/Dashboard";
+import DevOpsUpdates from "./pages/DevOpsUpdates";
+import ERPNextUpdates from "./pages/ERPNextUpdates";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
         <Route path="/resources" element={<Resources />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/devops-updates" element={<DevOpsUpdates />} />
+        <Route path="/erpnext-updates" element={<ERPNextUpdates />} />
       </Routes>
     </Router>
   );
