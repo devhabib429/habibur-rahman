@@ -63,19 +63,19 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <Navbar />
       
       <div className="pt-16"> {/* Add padding-top to account for fixed navbar */}
         <SidebarProvider>
           <div className="flex w-full">
-            <Sidebar>
+            <Sidebar className="border-r border-gray-200">
               <SidebarContent>
                 <SidebarGroup>
-                  <SidebarGroupLabel>
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-[#9b87f5]" />
-                      <span>Dashboard</span>
+                  <SidebarGroupLabel className="px-3 py-2">
+                    <div className="flex items-center gap-2 text-purple-600">
+                      <Sparkles className="w-4 h-4" />
+                      <span className="font-semibold">Dashboard</span>
                     </div>
                   </SidebarGroupLabel>
                   <SidebarGroupContent>
@@ -85,7 +85,10 @@ const Dashboard = () => {
                           <SidebarMenuButton
                             onClick={() => setActiveSection(item.id)}
                             data-active={activeSection === item.id}
-                            tooltip={item.title}
+                            className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors
+                              ${activeSection === item.id 
+                                ? 'bg-purple-50 text-purple-700' 
+                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
                           >
                             <item.icon className="w-4 h-4" />
                             <span>{item.title}</span>
@@ -102,9 +105,10 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="flex-1 p-6 md:p-8"
+              className="flex-1 p-4 md:p-6 lg:p-8 overflow-x-hidden"
             >
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 md:p-6 
+                backdrop-blur-sm backdrop-filter">
                 {renderContent()}
               </div>
             </motion.div>
