@@ -62,9 +62,10 @@ const ScheduleManager = () => {
         .from('schedule_items')
         .insert([newItem])
         .select()
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
+      if (!data) throw new Error('Failed to create schedule item');
       return data;
     },
     onSuccess: () => {
@@ -73,7 +74,8 @@ const ScheduleManager = () => {
       setIsOpen(false);
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Create error:', error);
       toast.error('Failed to add schedule item');
     },
   });
@@ -89,9 +91,10 @@ const ScheduleManager = () => {
         })
         .eq('id', item.id)
         .select()
-        .single();
+        .maybeSingle();
       
       if (error) throw error;
+      if (!data) throw new Error('Failed to update schedule item');
       return data;
     },
     onSuccess: () => {
@@ -101,7 +104,8 @@ const ScheduleManager = () => {
       setEditingItem(null);
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Update error:', error);
       toast.error('Failed to update schedule item');
     },
   });
@@ -119,7 +123,8 @@ const ScheduleManager = () => {
       queryClient.invalidateQueries({ queryKey: ['schedule-items'] });
       toast.success('Schedule item deleted successfully');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Delete error:', error);
       toast.error('Failed to delete schedule item');
     },
   });
