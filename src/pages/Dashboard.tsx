@@ -66,7 +66,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-white">
       <Navbar />
       
-      <div className="pt-16"> {/* Add padding-top to account for fixed navbar */}
+      <div className="mt-16"> {/* Changed pt-16 to mt-16 for better spacing */}
         <SidebarProvider>
           <div className="flex w-full">
             <Sidebar>
