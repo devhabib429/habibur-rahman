@@ -63,52 +63,54 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
-      <SidebarProvider>
-        <div className="flex-1 flex w-full">
-          <Sidebar>
-            <SidebarContent>
-              <SidebarGroup>
-                <SidebarGroupLabel>
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#9b87f5]" />
-                    <span>Dashboard</span>
-                  </div>
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {menuItems.map((item) => (
-                      <SidebarMenuItem key={item.id}>
-                        <SidebarMenuButton
-                          onClick={() => setActiveSection(item.id)}
-                          data-active={activeSection === item.id}
-                          tooltip={item.title}
-                        >
-                          <item.icon className="w-4 h-4" />
-                          <span>{item.title}</span>
-                        </SidebarMenuButton>
-                      </SidebarMenuItem>
-                    ))}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
-            </SidebarContent>
-          </Sidebar>
+      <div className="pt-16"> {/* Add padding-top to account for fixed navbar */}
+        <SidebarProvider>
+          <div className="flex w-full">
+            <Sidebar>
+              <SidebarContent>
+                <SidebarGroup>
+                  <SidebarGroupLabel>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#9b87f5]" />
+                      <span>Dashboard</span>
+                    </div>
+                  </SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    <SidebarMenu>
+                      {menuItems.map((item) => (
+                        <SidebarMenuItem key={item.id}>
+                          <SidebarMenuButton
+                            onClick={() => setActiveSection(item.id)}
+                            data-active={activeSection === item.id}
+                            tooltip={item.title}
+                          >
+                            <item.icon className="w-4 h-4" />
+                            <span>{item.title}</span>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </SidebarGroup>
+              </SidebarContent>
+            </Sidebar>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex-1 p-6 md:p-8"
-          >
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
-              {renderContent()}
-            </div>
-          </motion.div>
-        </div>
-      </SidebarProvider>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="flex-1 p-6 md:p-8"
+            >
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+                {renderContent()}
+              </div>
+            </motion.div>
+          </div>
+        </SidebarProvider>
+      </div>
 
       <Footer />
     </div>
