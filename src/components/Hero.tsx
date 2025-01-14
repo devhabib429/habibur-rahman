@@ -17,7 +17,7 @@ const Hero = () => {
       const { data, error } = await supabase
         .from('schedule_items')
         .select('*')
-        .order('date', { ascending: true })
+        .order('created_at', { ascending: false })
         .limit(3);
       
       if (error) {
@@ -39,11 +39,6 @@ const Hero = () => {
       return () => clearTimeout(timer);
     }
   }, [index]);
-
-  const scrollToNewsletter = () => {
-    const newsletterSection = document.getElementById('newsletter');
-    newsletterSection?.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <section className="pt-16 min-h-[90vh] flex items-center justify-center relative overflow-hidden bg-white">
@@ -112,14 +107,12 @@ const Hero = () => {
             <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto border border-gray-100">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-2xl font-semibold text-black">Schedule</h3>
-                {scheduleItems && scheduleItems.length > 0 && (
-                  <Link
-                    to="/dashboard"
-                    className="text-sm text-purple-600 hover:text-purple-700 transition-colors"
-                  >
-                    Manage Schedule →
-                  </Link>
-                )}
+                <Link
+                  to="/dashboard"
+                  className="text-sm text-purple-600 hover:text-purple-700 transition-colors"
+                >
+                  Manage Schedule →
+                </Link>
               </div>
               <div className="space-y-4">
                 {isLoading ? (

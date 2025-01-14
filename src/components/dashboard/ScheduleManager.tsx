@@ -46,26 +46,39 @@ const ScheduleManager = () => {
   const { data: scheduleItems, isLoading } = useQuery({
     queryKey: ['schedule-items'],
     queryFn: async () => {
+      console.log('Fetching schedule items in ScheduleManager');
       const { data, error } = await supabase
         .from('schedule_items')
         .select('*')
-        .order('date', { ascending: true });
+        .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching schedule items:', error);
+        throw error;
+      }
+      
+      console.log('Fetched schedule items:', data);
       return data as ScheduleItem[];
     },
   });
 
   const createMutation = useMutation({
     mutationFn: async (newItem: Omit<ScheduleItem, 'id'>) => {
+      console.log('Creating new schedule item:', newItem);
       const { data, error } = await supabase
         .from('schedule_items')
         .insert([newItem])
         .select()
         .maybeSingle();
       
-      if (error) throw error;
-      if (!data) throw new Error('Failed to create schedule item');
+      if (error) {
+        console.error('Error creating schedule item:', error);
+        throw error;
+      }
+      if (!data) {
+        throw new Error('No data returned after creating schedule item');
+      }
+      console.log('Created schedule item:', data);
       return data;
     },
     onSuccess: () => {
@@ -82,6 +95,7 @@ const ScheduleManager = () => {
 
   const updateMutation = useMutation({
     mutationFn: async (item: ScheduleItem) => {
+      console.log('Updating schedule item:', item);
       const { data, error } = await supabase
         .from('schedule_items')
         .update({
@@ -93,8 +107,14 @@ const ScheduleManager = () => {
         .select()
         .maybeSingle();
       
-      if (error) throw error;
-      if (!data) throw new Error('Failed to update schedule item');
+      if (error) {
+        console.error('Error updating schedule item:', error);
+        throw error;
+      }
+      if (!data) {
+        throw new Error('No data returned after updating schedule item');
+      }
+      console.log('Updated schedule item:', data);
       return data;
     },
     onSuccess: () => {
@@ -112,12 +132,17 @@ const ScheduleManager = () => {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      console.log('Deleting schedule item:', id);
       const { error } = await supabase
         .from('schedule_items')
         .delete()
         .eq('id', id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error deleting schedule item:', error);
+        throw error;
+      }
+      console.log('Deleted schedule item:', id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['schedule-items'] });
@@ -147,9 +172,13 @@ const ScheduleManager = () => {
     setIsOpen(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this schedule item?')) {
-      deleteMutation.mutate(id);
+      try {
+        await deleteMutation.mutateAsync(id);
+      } catch (error) {
+        console.error('Error deleting schedule item:', error);
+      }
     }
   };
 
