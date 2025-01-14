@@ -2,33 +2,33 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { supabase } from "@/integrations/supabase/client";
 
 const Hero = () => {
   const [text, setText] = useState("");
   const fullText = "DevOps & ERPNext Solutions";
   const [index, setIndex] = useState(0);
 
-  // Sample schedule data - in a real app this would come from your backend
-  const scheduleItems = [
-    {
-      id: 1,
-      title: "ERPNext Implementation Workshop",
-      date: "April 15, 2024",
-      time: "10:00 AM PST",
+  const { data: scheduleItems, isLoading } = useQuery({
+    queryKey: ['schedule-items'],
+    queryFn: async () => {
+      console.log('Fetching schedule items for Hero section');
+      const { data, error } = await supabase
+        .from('schedule_items')
+        .select('*')
+        .order('date', { ascending: true })
+        .limit(3);
+      
+      if (error) {
+        console.error('Error fetching schedule items:', error);
+        throw error;
+      }
+      
+      console.log('Fetched schedule items:', data);
+      return data;
     },
-    {
-      id: 2,
-      title: "DevOps Best Practices Webinar",
-      date: "April 20, 2024",
-      time: "2:00 PM PST",
-    },
-    {
-      id: 3,
-      title: "Cloud Migration Strategy Session",
-      date: "April 25, 2024",
-      time: "11:00 AM PST",
-    }
-  ];
+  });
 
   useEffect(() => {
     if (index < fullText.length) {
@@ -110,29 +110,49 @@ const Hero = () => {
             className="mt-8 mb-12"
           >
             <div className="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto border border-gray-100">
-              <h3 className="text-2xl font-semibold mb-6 text-black">Schedule</h3>
-              <div className="space-y-4">
-                {scheduleItems.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200 border border-gray-100"
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-2xl font-semibold text-black">Schedule</h3>
+                {scheduleItems && scheduleItems.length > 0 && (
+                  <Link
+                    to="/dashboard"
+                    className="text-sm text-purple-600 hover:text-purple-700 transition-colors"
                   >
-                    <div className="flex items-start space-x-3">
-                      <Calendar className="w-5 h-5 text-gray-600 mt-1" />
-                      <div className="text-left">
-                        <h4 className="font-medium text-black">{item.title}</h4>
-                        <p className="text-sm text-gray-600">{item.date}</p>
+                    Manage Schedule →
+                  </Link>
+                )}
+              </div>
+              <div className="space-y-4">
+                {isLoading ? (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600" />
+                  </div>
+                ) : scheduleItems && scheduleItems.length > 0 ? (
+                  scheduleItems.map((item) => (
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors duration-200 border border-gray-100"
+                    >
+                      <div className="flex items-start space-x-3">
+                        <Calendar className="w-5 h-5 text-gray-600 mt-1" />
+                        <div className="text-left">
+                          <h4 className="font-medium text-black">{item.title}</h4>
+                          <p className="text-sm text-gray-600">{item.date}</p>
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex items-center space-x-2 text-gray-600">
-                      <Clock className="w-4 h-4" />
-                      <span className="text-sm">{item.time}</span>
-                    </div>
-                  </motion.div>
-                ))}
+                      <div className="flex items-center space-x-2 text-gray-600">
+                        <Clock className="w-4 h-4" />
+                        <span className="text-sm">{item.time}</span>
+                      </div>
+                    </motion.div>
+                  ))
+                ) : (
+                  <div className="text-center py-8 text-gray-500">
+                    No scheduled events at the moment
+                  </div>
+                )}
               </div>
             </div>
           </motion.div>
