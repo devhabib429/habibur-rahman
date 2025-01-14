@@ -15,8 +15,8 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -66,10 +66,10 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <Navbar />
       
-      <div className="pt-16"> {/* Add padding-top to account for fixed navbar */}
+      <div className="pt-16">
         <SidebarProvider>
           <div className="flex w-full">
-            <Sidebar className="border-r border-gray-200">
+            <Sidebar className="border-r border-gray-200 bg-white">
               <SidebarContent>
                 <SidebarGroup>
                   <SidebarGroupLabel className="px-3 py-2">
@@ -107,8 +107,7 @@ const Dashboard = () => {
               transition={{ duration: 0.5 }}
               className="flex-1 p-4 md:p-6 lg:p-8 overflow-x-hidden"
             >
-              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 md:p-6 
-                backdrop-blur-sm backdrop-filter">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 md:p-6">
                 {renderContent()}
               </div>
             </motion.div>
