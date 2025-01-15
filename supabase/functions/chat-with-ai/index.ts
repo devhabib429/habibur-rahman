@@ -56,7 +56,7 @@ serve(async (req) => {
       }
     });
 
-    console.log('Received response from Hugging Face');
+    console.log('Received response from Hugging Face:', response);
 
     if (!response || !response.generated_text) {
       console.error('Invalid response from Hugging Face:', response);
