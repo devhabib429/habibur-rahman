@@ -110,11 +110,17 @@ const Chat = () => {
         displayContent: '▋'
       }]);
 
+      console.log('Sending chat request to edge function...');
       const { data, error } = await supabase.functions.invoke('chat-with-ai', {
         body: { prompt: userMessage }
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Edge function error:', error);
+        throw error;
+      }
+
+      console.log('Received response:', data);
 
       setMessages(prev => {
         const newMessages = prev.slice(0, -1);
