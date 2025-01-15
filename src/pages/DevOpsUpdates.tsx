@@ -2,8 +2,9 @@ import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import { Code, Server, Wrench, BookOpen, Bell, Terminal } from "lucide-react";
+import { Terminal, Server, Wrench, BookOpen, Bell } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -22,31 +23,19 @@ const DevOpsUpdates = () => {
   });
 
   const categories = {
-    feature: { icon: Server, label: "New Features", color: "bg-green-100 text-green-800" },
+    feature: { icon: Server, label: "New Features", color: "bg-blue-100 text-blue-800" },
     bugfix: { icon: Wrench, label: "Bug Fixes", color: "bg-red-100 text-red-800" },
-    announcement: { icon: Bell, label: "Announcements", color: "bg-blue-100 text-blue-800" },
+    announcement: { icon: Bell, label: "Announcements", color: "bg-green-100 text-green-800" },
     tutorial: { icon: BookOpen, label: "Tutorials", color: "bg-purple-100 text-purple-800" },
   };
-
-  const groupUpdatesByType = (updates: any[]) => {
-    return updates?.reduce((acc: any, update) => {
-      if (!acc[update.update_type]) {
-        acc[update.update_type] = [];
-      }
-      acc[update.update_type].push(update);
-      return acc;
-    }, {});
-  };
-
-  const groupedUpdates = groupUpdatesByType(updates || []);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
       
-      {/* Hero Section */}
+      {/* Hero Section with Square Pattern Background */}
       <div className="relative bg-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-50 to-white" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:24px_24px]" />
         <div className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <motion.div
@@ -79,73 +68,137 @@ const DevOpsUpdates = () => {
         </div>
       </div>
 
-      {/* Updates Section */}
+      {/* Updates Section with Capsule Tabs */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid gap-8">
-          {Object.entries(groupedUpdates).map(([type, updates]: [string, any]) => (
-            <motion.div
-              key={type}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-6"
-            >
-              <div className="flex items-center gap-3">
-                {categories[type as keyof typeof categories]?.icon && (
-                  <div className={`p-2 rounded-lg ${categories[type as keyof typeof categories].color}`}>
-                    {React.createElement(categories[type as keyof typeof categories].icon, {
-                      className: "w-5 h-5",
-                    })}
-                  </div>
-                )}
-                <h2 className="text-2xl font-semibold text-gray-900">
-                  {categories[type as keyof typeof categories]?.label || type}
-                </h2>
-              </div>
+        <Tabs defaultValue="all" className="w-full">
+          <div className="flex justify-center mb-8">
+            <TabsList className="bg-white p-1 rounded-full border shadow-sm">
+              <TabsTrigger 
+                value="all" 
+                className="px-6 py-2 rounded-full data-[state=active]:bg-purple-500 data-[state=active]:text-white transition-all"
+              >
+                All Updates
+              </TabsTrigger>
+              {Object.entries(categories).map(([key, { label }]) => (
+                <TabsTrigger
+                  key={key}
+                  value={key}
+                  className="px-6 py-2 rounded-full data-[state=active]:bg-purple-500 data-[state=active]:text-white transition-all"
+                >
+                  {label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </div>
 
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {updates.map((update: any) => (
-                  <motion.div
-                    key={update.id}
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow border border-gray-100"
-                  >
-                    <div className="space-y-4">
+          <TabsContent value="all" className="mt-6">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {updates?.map((update) => (
+                <motion.div
+                  key={update.id}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      {categories[update.update_type as keyof typeof categories]?.icon && (
+                        <div className={`p-2 rounded-lg ${categories[update.update_type as keyof typeof categories].color}`}>
+                          {React.createElement(categories[update.update_type as keyof typeof categories].icon, {
+                            className: "w-5 h-5",
+                          })}
+                        </div>
+                      )}
                       <h3 className="text-xl font-semibold text-gray-900 line-clamp-2">
                         {update.title}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3">{update.description}</p>
-                      {update.version && (
-                        <p className="text-sm text-gray-500">Version: {update.version}</p>
-                      )}
-                      {update.tags && update.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-2">
-                          {update.tags.map((tag: string, i: number) => (
-                            <Badge key={i} variant="secondary" className="bg-gray-100">
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      )}
-                      {update.link && (
-                        <a
-                          href={update.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors"
-                        >
-                          Learn More →
-                        </a>
-                      )}
                     </div>
-                  </motion.div>
-                ))}
+                    <p className="text-gray-600 line-clamp-3">{update.description}</p>
+                    {update.version && (
+                      <p className="text-sm text-gray-500">Version: {update.version}</p>
+                    )}
+                    {update.tags && update.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {update.tags.map((tag: string, i: number) => (
+                          <Badge key={i} variant="secondary" className="bg-gray-100">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    )}
+                    {update.link && (
+                      <a
+                        href={update.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors"
+                      >
+                        Learn More →
+                      </a>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </TabsContent>
+
+          {Object.entries(categories).map(([key, { label }]) => (
+            <TabsContent key={key} value={key} className="mt-6">
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {updates
+                  ?.filter((update) => update.update_type === key)
+                  .map((update) => (
+                    <motion.div
+                      key={update.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
+                    >
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                          {categories[update.update_type as keyof typeof categories]?.icon && (
+                            <div className={`p-2 rounded-lg ${categories[update.update_type as keyof typeof categories].color}`}>
+                              {React.createElement(categories[update.update_type as keyof typeof categories].icon, {
+                                className: "w-5 h-5",
+                              })}
+                            </div>
+                          )}
+                          <h3 className="text-xl font-semibold text-gray-900 line-clamp-2">
+                            {update.title}
+                          </h3>
+                        </div>
+                        <p className="text-gray-600 line-clamp-3">{update.description}</p>
+                        {update.version && (
+                          <p className="text-sm text-gray-500">Version: {update.version}</p>
+                        )}
+                        {update.tags && update.tags.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {update.tags.map((tag: string, i: number) => (
+                              <Badge key={i} variant="secondary" className="bg-gray-100">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                        {update.link && (
+                          <a
+                            href={update.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-purple-600 hover:text-purple-800 transition-colors"
+                          >
+                            Learn More →
+                          </a>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
               </div>
-            </motion.div>
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
       </div>
       <Footer />
     </div>
