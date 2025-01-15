@@ -22,71 +22,79 @@ serve(async (req) => {
       throw new Error('Hugging Face token is not configured');
     }
 
-    // Parse request body
+    // Parse request body with error handling
     let prompt;
     try {
       const body = await req.json();
       prompt = body.prompt;
-      console.log('Received prompt:', prompt);
+      if (typeof prompt !== 'string' || prompt.length === 0) {
+        throw new Error('Invalid prompt format');
+      }
+      console.log('Processing prompt:', prompt.substring(0, 100) + '...');
     } catch (e) {
       console.error('Failed to parse request body:', e);
-      throw new Error('Invalid request body');
+      throw new Error('Invalid request format');
     }
 
-    if (!prompt) {
-      console.error('No prompt provided');
-      throw new Error('No prompt provided');
-    }
-
-    // Initialize Hugging Face client
+    // Initialize Hugging Face client with timeout
     console.log('Initializing Hugging Face client...');
     const hf = new HfInference(hfToken);
     
-    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide detailed, accurate, and complete responses.`;
+    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide clear and concise responses.`;
     
-    console.log('Sending request to Hugging Face...');
-    const response = await hf.textGeneration({
-      model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
-      inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
-      parameters: {
-        max_new_tokens: 1000, // Reduced from 2000 to prevent timeouts
-        temperature: 0.7,
-        top_p: 0.95,
-        repetition_penalty: 1.15,
-        return_full_text: false
+    // Set a timeout for the API call
+    const timeoutMs = 25000; // 25 seconds
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+    try {
+      console.log('Sending request to Hugging Face...');
+      const response = await hf.textGeneration({
+        model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+        inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
+        parameters: {
+          max_new_tokens: 512, // Reduced to prevent timeouts
+          temperature: 0.7,
+          top_p: 0.95,
+          repetition_penalty: 1.15,
+          return_full_text: false,
+        }
+      });
+
+      console.log('Response received:', JSON.stringify(response).substring(0, 200) + '...');
+
+      if (!response || !response.generated_text) {
+        throw new Error('Invalid response format from Hugging Face');
       }
-    });
 
-    console.log('Raw response from Hugging Face:', response);
+      // Clean up the response
+      let cleanResponse = response.generated_text
+        .trim()
+        .replace(/^Assistant: /, '')
+        .replace(/^assistant: /, '');
 
-    if (!response || !response.generated_text) {
-      console.error('Invalid response from Hugging Face:', response);
-      throw new Error('Invalid response from AI model');
+      console.log('Cleaned response length:', cleanResponse.length);
+
+      return new Response(
+        JSON.stringify({ response: cleanResponse }),
+        { 
+          headers: { 
+            ...corsHeaders, 
+            'Content-Type': 'application/json' 
+          } 
+        }
+      );
+    } catch (error) {
+      if (error.name === 'AbortError') {
+        throw new Error('Request timed out after ' + timeoutMs + 'ms');
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeout);
     }
-
-    // Clean up the response
-    let cleanResponse = response.generated_text
-      .replace(systemPrompt, '')
-      .replace('<s>[INST]', '')
-      .replace('[/INST]', '')
-      .replace('User:', '')
-      .trim();
-
-    console.log('Clean response:', cleanResponse);
-
-    return new Response(
-      JSON.stringify({ response: cleanResponse }),
-      { 
-        headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
-        } 
-      }
-    );
   } catch (error) {
     console.error('Error in chat-with-ai function:', error);
     
-    // Return a more detailed error response
     return new Response(
       JSON.stringify({ 
         error: 'An unexpected error occurred', 
