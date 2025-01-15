@@ -65,7 +65,7 @@ const Dashboard = () => {
     }
   };
 
-  const SidebarContent = () => (
+  const SidebarMenuContent = () => (
     <SidebarContent>
       <SidebarGroup>
         <SidebarGroupLabel className="px-3 py-2">
@@ -112,12 +112,12 @@ const Dashboard = () => {
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-64 p-0 bg-white">
-                  <SidebarContent />
+                  <SidebarMenuContent />
                 </SheetContent>
               </Sheet>
             ) : (
               <Sidebar className="border-r border-gray-200 bg-white">
-                <SidebarContent />
+                <SidebarMenuContent />
               </Sidebar>
             )}
 
