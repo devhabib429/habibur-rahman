@@ -23,14 +23,14 @@ const ERPNextUpdates = () => {
   });
 
   const categories = {
-    feature: { icon: Server, label: "New Features", color: "bg-blue-100 text-blue-800" },
-    bugfix: { icon: Wrench, label: "Bug Fixes", color: "bg-red-100 text-red-800" },
-    announcement: { icon: Bell, label: "Announcements", color: "bg-green-100 text-green-800" },
-    tutorial: { icon: BookOpen, label: "Tutorials", color: "bg-purple-100 text-purple-800" },
+    feature: { icon: Server, label: "New Features", color: "bg-gray-100 text-gray-800" },
+    bugfix: { icon: Wrench, label: "Bug Fixes", color: "bg-gray-100 text-gray-800" },
+    announcement: { icon: Bell, label: "Announcements", color: "bg-gray-100 text-gray-800" },
+    tutorial: { icon: BookOpen, label: "Tutorials", color: "bg-gray-100 text-gray-800" },
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
       {/* Hero Section with Square Pattern Background */}
@@ -44,8 +44,8 @@ const ERPNextUpdates = () => {
               transition={{ duration: 0.5 }}
               className="flex justify-center mb-8"
             >
-              <div className="p-3 bg-blue-100 rounded-full">
-                <FileText className="w-8 h-8 text-blue-600" />
+              <div className="p-3 bg-gray-100 rounded-full">
+                <FileText className="w-8 h-8 text-gray-800" />
               </div>
             </motion.div>
             <motion.h1
@@ -72,10 +72,10 @@ const ERPNextUpdates = () => {
       <div className="container mx-auto px-4 py-16">
         <Tabs defaultValue="all" className="w-full">
           <div className="flex justify-center mb-8">
-            <TabsList className="bg-white p-1 rounded-full border shadow-sm">
+            <TabsList className="bg-white p-1 rounded-full border border-gray-200 shadow-sm">
               <TabsTrigger 
                 value="all" 
-                className="px-6 py-2 rounded-full data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all"
+                className="px-6 py-2 rounded-full data-[state=active]:bg-gray-900 data-[state=active]:text-white transition-all"
               >
                 All Updates
               </TabsTrigger>
@@ -83,7 +83,7 @@ const ERPNextUpdates = () => {
                 <TabsTrigger
                   key={key}
                   value={key}
-                  className="px-6 py-2 rounded-full data-[state=active]:bg-blue-500 data-[state=active]:text-white transition-all"
+                  className="px-6 py-2 rounded-full data-[state=active]:bg-gray-900 data-[state=active]:text-white transition-all"
                 >
                   {label}
                 </TabsTrigger>
@@ -99,7 +99,7 @@ const ERPNextUpdates = () => {
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
+                  className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200"
                 >
                   <div className="space-y-4">
                     <div className="flex items-center gap-2">
@@ -121,21 +121,11 @@ const ERPNextUpdates = () => {
                     {update.tags && update.tags.length > 0 && (
                       <div className="flex flex-wrap gap-2">
                         {update.tags.map((tag: string, i: number) => (
-                          <Badge key={i} variant="secondary" className="bg-gray-100">
+                          <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-800">
                             {tag}
                           </Badge>
                         ))}
                       </div>
-                    )}
-                    {update.link && (
-                      <a
-                        href={update.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
-                      >
-                        Learn More →
-                      </a>
                     )}
                   </div>
                 </motion.div>
@@ -154,7 +144,7 @@ const ERPNextUpdates = () => {
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3 }}
-                      className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-100"
+                      className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200"
                     >
                       <div className="space-y-4">
                         <div className="flex items-center gap-2">
@@ -176,21 +166,11 @@ const ERPNextUpdates = () => {
                         {update.tags && update.tags.length > 0 && (
                           <div className="flex flex-wrap gap-2">
                             {update.tags.map((tag: string, i: number) => (
-                              <Badge key={i} variant="secondary" className="bg-gray-100">
+                              <Badge key={i} variant="secondary" className="bg-gray-100 text-gray-800">
                                 {tag}
                               </Badge>
                             ))}
                           </div>
-                        )}
-                        {update.link && (
-                          <a
-                            href={update.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors"
-                          >
-                            Learn More →
-                          </a>
                         )}
                       </div>
                     </motion.div>
