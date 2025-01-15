@@ -23,6 +23,9 @@ import {
   SidebarProvider,
 } from "@/components/ui/sidebar";
 import { useState } from "react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const Dashboard = () => {
   const isMobile = useIsMobile();
@@ -62,44 +65,61 @@ const Dashboard = () => {
     }
   };
 
+  const SidebarContent = () => (
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel className="px-3 py-2">
+          <div className="flex items-center gap-2 text-black">
+            <Sparkles className="w-4 h-4" />
+            <span className="font-semibold">Dashboard</span>
+          </div>
+        </SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            {menuItems.map((item) => (
+              <SidebarMenuItem key={item.id}>
+                <SidebarMenuButton
+                  onClick={() => setActiveSection(item.id)}
+                  data-active={activeSection === item.id}
+                  className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors
+                    ${activeSection === item.id 
+                      ? 'bg-gray-100 text-black' 
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                >
+                  <item.icon className="w-4 h-4" />
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-white">
       <Navbar />
       
       <div className="pt-16">
         <SidebarProvider>
           <div className="flex w-full">
-            <Sidebar className="border-r border-gray-200 bg-white">
-              <SidebarContent>
-                <SidebarGroup>
-                  <SidebarGroupLabel className="px-3 py-2">
-                    <div className="flex items-center gap-2 text-purple-600">
-                      <Sparkles className="w-4 h-4" />
-                      <span className="font-semibold">Dashboard</span>
-                    </div>
-                  </SidebarGroupLabel>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {menuItems.map((item) => (
-                        <SidebarMenuItem key={item.id}>
-                          <SidebarMenuButton
-                            onClick={() => setActiveSection(item.id)}
-                            data-active={activeSection === item.id}
-                            className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors
-                              ${activeSection === item.id 
-                                ? 'bg-purple-50 text-purple-700' 
-                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
-                          >
-                            <item.icon className="w-4 h-4" />
-                            <span>{item.title}</span>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </SidebarGroup>
-              </SidebarContent>
-            </Sidebar>
+            {isMobile ? (
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="fixed left-4 top-20 z-50 lg:hidden">
+                    <Menu className="h-6 w-6" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-64 p-0 bg-white">
+                  <SidebarContent />
+                </SheetContent>
+              </Sheet>
+            ) : (
+              <Sidebar className="border-r border-gray-200 bg-white">
+                <SidebarContent />
+              </Sidebar>
+            )}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

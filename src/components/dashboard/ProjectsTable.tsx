@@ -39,22 +39,22 @@ const ProjectsTable = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-8">
-        <Loader2 className="w-8 h-8 text-purple-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-gray-500 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-purple-500/20 bg-gray-800/50 overflow-hidden">
+    <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="hover:bg-purple-500/10 transition-colors">
-            <TableHead className="text-purple-200">Name</TableHead>
-            <TableHead className="text-purple-200">Email</TableHead>
-            <TableHead className="text-purple-200">Company</TableHead>
-            <TableHead className="text-purple-200">Project Type</TableHead>
-            <TableHead className="text-purple-200">Budget</TableHead>
-            <TableHead className="text-purple-200">Timeline</TableHead>
+          <TableRow className="hover:bg-gray-50 transition-colors">
+            <TableHead className="text-black font-medium">Name</TableHead>
+            <TableHead className="text-black font-medium">Email</TableHead>
+            <TableHead className="text-black font-medium">Company</TableHead>
+            <TableHead className="text-black font-medium">Project Type</TableHead>
+            <TableHead className="text-black font-medium">Budget</TableHead>
+            <TableHead className="text-black font-medium">Timeline</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -64,18 +64,18 @@ const ProjectsTable = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="hover:bg-purple-500/10 transition-colors"
+              className="hover:bg-gray-50 transition-colors"
             >
-              <TableCell className="text-white font-medium">{project.name}</TableCell>
-              <TableCell className="text-gray-300">{project.email}</TableCell>
-              <TableCell className="text-gray-300">{project.company}</TableCell>
+              <TableCell className="text-black font-medium">{project.name}</TableCell>
+              <TableCell className="text-gray-600">{project.email}</TableCell>
+              <TableCell className="text-gray-600">{project.company}</TableCell>
               <TableCell>
-                <span className="px-3 py-1 rounded-full text-xs font-medium bg-purple-500/20 text-purple-200">
+                <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                   {project.project_type}
                 </span>
               </TableCell>
-              <TableCell className="text-gray-300">{project.budget}</TableCell>
-              <TableCell className="text-gray-300">{project.timeline}</TableCell>
+              <TableCell className="text-gray-600">{project.budget}</TableCell>
+              <TableCell className="text-gray-600">{project.timeline}</TableCell>
             </motion.tr>
           ))}
         </TableBody>
