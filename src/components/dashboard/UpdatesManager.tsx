@@ -64,7 +64,10 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching updates:', error);
+        throw error;
+      }
       return data as Update[];
     },
   });
@@ -77,7 +80,10 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error creating update:', error);
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {
@@ -86,7 +92,8 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
       setIsOpen(false);
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error);
       toast.error('Failed to add update');
     },
   });
@@ -107,7 +114,10 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
         .select()
         .single();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error updating update:', error);
+        throw error;
+      }
       return data;
     },
     onSuccess: () => {
@@ -117,7 +127,8 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
       setEditingUpdate(null);
       form.reset();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error);
       toast.error('Failed to modify update');
     },
   });
@@ -129,13 +140,17 @@ const UpdatesManager = ({ type }: UpdatesManagerProps) => {
         .delete()
         .eq('id', id);
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error deleting update:', error);
+        throw error;
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [tableName] });
       toast.success('Update deleted successfully');
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error);
       toast.error('Failed to delete update');
     },
   });
