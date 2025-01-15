@@ -49,14 +49,15 @@ serve(async (req) => {
       model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
       inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
       parameters: {
-        max_new_tokens: 2000,
+        max_new_tokens: 1000, // Reduced from 2000 to prevent timeouts
         temperature: 0.7,
         top_p: 0.95,
-        repetition_penalty: 1.15
+        repetition_penalty: 1.15,
+        return_full_text: false
       }
     });
 
-    console.log('Received response from Hugging Face:', response);
+    console.log('Raw response from Hugging Face:', response);
 
     if (!response || !response.generated_text) {
       console.error('Invalid response from Hugging Face:', response);
