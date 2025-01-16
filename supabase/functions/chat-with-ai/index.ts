@@ -15,19 +15,17 @@ serve(async (req) => {
   try {
     console.log('Received chat request');
     
-    // Check if HUGGING_FACE_ACCESS_TOKEN is set
     const hfToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN');
     if (!hfToken) {
       console.error('HUGGING_FACE_ACCESS_TOKEN is not set');
       throw new Error('Hugging Face token is not configured');
     }
 
-    // Parse request body with error handling
     let prompt;
     try {
       const body = await req.json();
       prompt = body.prompt;
-      if (typeof prompt !== 'string' || prompt.length === 0) {
+      if (!prompt || typeof prompt !== 'string') {
         throw new Error('Invalid prompt format');
       }
       console.log('Processing prompt:', prompt.substring(0, 100) + '...');
@@ -36,7 +34,6 @@ serve(async (req) => {
       throw new Error('Invalid request format');
     }
 
-    // Initialize Hugging Face client
     console.log('Initializing Hugging Face client...');
     const hf = new HfInference(hfToken);
     
@@ -53,6 +50,7 @@ serve(async (req) => {
           top_p: 0.95,
           repetition_penalty: 1.15,
           return_full_text: false,
+          wait_for_model: true
         }
       });
 
@@ -62,7 +60,6 @@ serve(async (req) => {
         throw new Error('Invalid response format from Hugging Face');
       }
 
-      // Clean up the response
       let cleanResponse = response.generated_text
         .trim()
         .replace(/^Assistant: /, '')
