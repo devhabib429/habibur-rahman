@@ -36,24 +36,19 @@ serve(async (req) => {
       throw new Error('Invalid request format');
     }
 
-    // Initialize Hugging Face client with timeout
+    // Initialize Hugging Face client
     console.log('Initializing Hugging Face client...');
     const hf = new HfInference(hfToken);
     
     const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide clear and concise responses.`;
     
-    // Set a timeout for the API call
-    const timeoutMs = 25000; // 25 seconds
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
     try {
       console.log('Sending request to Hugging Face...');
       const response = await hf.textGeneration({
         model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
         inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
         parameters: {
-          max_new_tokens: 512, // Reduced to prevent timeouts
+          max_new_tokens: 512,
           temperature: 0.7,
           top_p: 0.95,
           repetition_penalty: 1.15,
@@ -85,12 +80,8 @@ serve(async (req) => {
         }
       );
     } catch (error) {
-      if (error.name === 'AbortError') {
-        throw new Error('Request timed out after ' + timeoutMs + 'ms');
-      }
-      throw error;
-    } finally {
-      clearTimeout(timeout);
+      console.error('Error calling Hugging Face API:', error);
+      throw new Error(`Failed to get response from Hugging Face: ${error.message}`);
     }
   } catch (error) {
     console.error('Error in chat-with-ai function:', error);
