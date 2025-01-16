@@ -6,6 +6,22 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 1000; // 1 second
+
+async function retryWithDelay(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
+  try {
+    return await fn();
+  } catch (error) {
+    if (retries > 0) {
+      console.log(`Retrying... ${MAX_RETRIES - retries + 1} attempt`);
+      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
+      return retryWithDelay(fn, retries - 1);
+    }
+    throw error;
+  }
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -41,24 +57,28 @@ serve(async (req) => {
     
     try {
       console.log('Sending request to Hugging Face...');
-      const response = await hf.textGeneration({
-        model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
-        inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
-        parameters: {
-          max_new_tokens: 512,
-          temperature: 0.7,
-          top_p: 0.95,
-          repetition_penalty: 1.15,
-          return_full_text: false,
-          wait_for_model: true
+      const response = await retryWithDelay(async () => {
+        const result = await hf.textGeneration({
+          model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+          inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
+          parameters: {
+            max_new_tokens: 512,
+            temperature: 0.7,
+            top_p: 0.95,
+            repetition_penalty: 1.15,
+            return_full_text: false,
+            wait_for_model: true
+          }
+        });
+        
+        if (!result || !result.generated_text) {
+          throw new Error('Invalid response format from Hugging Face');
         }
+        
+        return result;
       });
 
       console.log('Response received:', JSON.stringify(response).substring(0, 200) + '...');
-
-      if (!response || !response.generated_text) {
-        throw new Error('Invalid response format from Hugging Face');
-      }
 
       let cleanResponse = response.generated_text
         .trim()
