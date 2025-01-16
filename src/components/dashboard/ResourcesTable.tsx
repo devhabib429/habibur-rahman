@@ -26,27 +26,27 @@ interface ResourcesTableProps {
 
 const ResourcesTable = ({ resources, onEdit, onDelete }: ResourcesTableProps) => {
   return (
-    <div className="rounded-md border border-gray-700 bg-gray-800/50">
+    <div className="rounded-md border border-gray-200 bg-white shadow-sm">
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className="text-gray-300">Title</TableHead>
-            <TableHead className="text-gray-300">Description</TableHead>
-            <TableHead className="text-gray-300">Type</TableHead>
-            <TableHead className="text-gray-300">Category</TableHead>
-            <TableHead className="text-gray-300">URL</TableHead>
-            <TableHead className="text-gray-300 text-right">Actions</TableHead>
+            <TableHead className="text-black">Title</TableHead>
+            <TableHead className="text-black">Description</TableHead>
+            <TableHead className="text-black">Type</TableHead>
+            <TableHead className="text-black">Category</TableHead>
+            <TableHead className="text-black">URL</TableHead>
+            <TableHead className="text-black text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {resources?.map((resource) => (
             <TableRow key={resource.id}>
-              <TableCell className="text-white">{resource.title}</TableCell>
-              <TableCell className="text-white">{resource.description}</TableCell>
-              <TableCell className="text-white capitalize">{resource.type}</TableCell>
-              <TableCell className="text-white">{resource.category}</TableCell>
-              <TableCell className="text-white">
-                <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+              <TableCell className="text-black">{resource.title}</TableCell>
+              <TableCell className="text-black">{resource.description}</TableCell>
+              <TableCell className="text-black capitalize">{resource.type}</TableCell>
+              <TableCell className="text-black">{resource.category}</TableCell>
+              <TableCell className="text-black">
+                <a href={resource.url} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
                   View
                 </a>
               </TableCell>

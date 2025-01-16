@@ -129,8 +129,8 @@ const HotTakesManager = () => {
 
   return (
     <div className="space-y-8">
-      <form onSubmit={handleSubmit} className="space-y-4 bg-gray-800/50 p-6 rounded-lg border border-gray-700">
-        <h3 className="text-xl font-semibold text-white mb-4">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+        <h3 className="text-xl font-semibold text-black mb-4">
           {isEditing ? "Edit Hot Take" : "Add New Hot Take"}
         </h3>
         
@@ -140,7 +140,7 @@ const HotTakesManager = () => {
               placeholder="Category"
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="bg-gray-700/50 border-gray-600 text-white"
+              className="bg-white border-gray-200 text-black"
             />
           </div>
           
@@ -149,7 +149,7 @@ const HotTakesManager = () => {
               placeholder="Opinion"
               value={formData.opinion}
               onChange={(e) => setFormData({ ...formData, opinion: e.target.value })}
-              className="bg-gray-700/50 border-gray-600 text-white"
+              className="bg-white border-gray-200 text-black"
             />
           </div>
           
@@ -158,7 +158,7 @@ const HotTakesManager = () => {
               placeholder="Explanation"
               value={formData.explanation}
               onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
-              className="bg-gray-700/50 border-gray-600 text-white"
+              className="bg-white border-gray-200 text-black"
             />
           </div>
         </div>
@@ -175,22 +175,22 @@ const HotTakesManager = () => {
         </div>
       </form>
 
-      <div className="rounded-md border border-gray-700 bg-gray-800/50">
+      <div className="rounded-md border border-gray-200 bg-white shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-gray-300">Category</TableHead>
-              <TableHead className="text-gray-300">Opinion</TableHead>
-              <TableHead className="text-gray-300">Explanation</TableHead>
-              <TableHead className="text-gray-300 text-right">Actions</TableHead>
+              <TableHead className="text-black">Category</TableHead>
+              <TableHead className="text-black">Opinion</TableHead>
+              <TableHead className="text-black">Explanation</TableHead>
+              <TableHead className="text-black text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {hotTakes?.map((take) => (
               <TableRow key={take.id}>
-                <TableCell className="text-white">{take.category}</TableCell>
-                <TableCell className="text-white">{take.opinion}</TableCell>
-                <TableCell className="text-white">{take.explanation}</TableCell>
+                <TableCell className="text-black">{take.category}</TableCell>
+                <TableCell className="text-black">{take.opinion}</TableCell>
+                <TableCell className="text-black">{take.explanation}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button

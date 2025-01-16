@@ -45,7 +45,7 @@ const ProjectsTable = () => {
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+    <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-gray-50 transition-colors">
@@ -67,15 +67,15 @@ const ProjectsTable = () => {
               className="hover:bg-gray-50 transition-colors"
             >
               <TableCell className="text-black font-medium">{project.name}</TableCell>
-              <TableCell className="text-gray-600">{project.email}</TableCell>
-              <TableCell className="text-gray-600">{project.company}</TableCell>
+              <TableCell className="text-black">{project.email}</TableCell>
+              <TableCell className="text-black">{project.company}</TableCell>
               <TableCell>
                 <span className="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                   {project.project_type}
                 </span>
               </TableCell>
-              <TableCell className="text-gray-600">{project.budget}</TableCell>
-              <TableCell className="text-gray-600">{project.timeline}</TableCell>
+              <TableCell className="text-black">{project.budget}</TableCell>
+              <TableCell className="text-black">{project.timeline}</TableCell>
             </motion.tr>
           ))}
         </TableBody>
