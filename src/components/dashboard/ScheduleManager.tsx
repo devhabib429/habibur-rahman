@@ -191,9 +191,9 @@ const ScheduleManager = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 bg-white p-6 rounded-lg">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-white">Schedule Items</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Schedule Items</h2>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
             <Button 
@@ -211,9 +211,9 @@ const ScheduleManager = () => {
               Add Schedule Item
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-gray-900 border border-purple-500/20">
+          <DialogContent className="bg-white">
             <DialogHeader>
-              <DialogTitle className="text-white">
+              <DialogTitle className="text-gray-900">
                 {editingItem ? 'Edit Schedule Item' : 'Add New Schedule Item'}
               </DialogTitle>
             </DialogHeader>
@@ -224,9 +224,9 @@ const ScheduleManager = () => {
                   name="title"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Title</FormLabel>
+                      <FormLabel className="text-gray-900">Title</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" />
+                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -237,9 +237,9 @@ const ScheduleManager = () => {
                   name="date"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Date</FormLabel>
+                      <FormLabel className="text-gray-900">Date</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" placeholder="e.g. April 15, 2024" />
+                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" placeholder="e.g. April 15, 2024" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -250,9 +250,9 @@ const ScheduleManager = () => {
                   name="time"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-white">Time</FormLabel>
+                      <FormLabel className="text-gray-900">Time</FormLabel>
                       <FormControl>
-                        <Input {...field} className="bg-gray-800 border-purple-500/20 text-white" placeholder="e.g. 10:00 AM PST" />
+                        <Input {...field} className="bg-gray-100 border-gray-300 text-gray-900" placeholder="e.g. 10:00 AM PST" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -283,16 +283,16 @@ const ScheduleManager = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800/50 backdrop-blur-sm border border-purple-500/20 rounded-lg p-4"
+              className="bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200"
             >
               <div className="flex justify-between items-center">
                 <div className="flex items-center gap-4">
                   <div className="p-2 bg-purple-600 rounded-lg">
-                    <Calendar className="w-5 h-5" />
+                    <Calendar className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-white">{item.title}</h3>
-                    <p className="text-sm text-gray-300">{item.date} at {item.time}</p>
+                    <h3 className="text-lg font-semibold text-gray-900">{item.title}</h3>
+                    <p className="text-sm text-gray-600">{item.date} at {item.time}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">

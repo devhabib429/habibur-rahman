@@ -53,7 +53,7 @@ const Timeline = () => {
         <motion.h2 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold text-center mb-16 font-['Space_Grotesk'] text-black"
+          className="text-4xl font-bold text-center mb-16 font-['Space_Grotesk'] text-gray-900"
         >
           Experience Timeline
         </motion.h2>
@@ -65,7 +65,6 @@ const Timeline = () => {
           viewport={{ once: true }}
           className="relative"
         >
-          {/* Vertical line with gradient */}
           <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-px bg-gradient-to-b from-gray-200 via-gray-300 to-gray-200 hidden md:block" />
           
           {experiences.map((exp, index) => (
@@ -100,7 +99,7 @@ const Timeline = () => {
               <motion.div 
                 whileHover={{ scale: 1.2, rotate: 360 }}
                 transition={{ duration: 0.5 }}
-                className="relative z-10 flex items-center justify-center w-12 h-12 bg-black rounded-full border-4 border-white text-white my-4 md:my-0 shadow-lg"
+                className="relative z-10 flex items-center justify-center w-12 h-12 bg-gray-900 rounded-full border-4 border-white text-white my-4 md:my-0 shadow-lg"
               >
                 {exp.icon}
               </motion.div>
