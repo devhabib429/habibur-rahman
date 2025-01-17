@@ -10,7 +10,7 @@ const corsHeaders = {
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 2 seconds initial delay
-const HF_TOKEN = "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"; // Temporary hardcoded token for testing
+const HF_TOKEN = Deno.env.get("HUGGING_FACE_ACCESS_TOKEN");
 
 async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
   for (let i = 0; i < retries; i++) {
@@ -39,6 +39,24 @@ serve(async (req) => {
 
   try {
     console.log('Received chat request');
+
+    // Validate Hugging Face token
+    if (!HF_TOKEN) {
+      console.error('HUGGING_FACE_ACCESS_TOKEN is not configured');
+      return new Response(
+        JSON.stringify({ 
+          error: 'Hugging Face token not configured',
+          details: 'Please configure HUGGING_FACE_ACCESS_TOKEN in Supabase secrets'
+        }),
+        { 
+          status: 500,
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
+    }
 
     let prompt;
     try {
