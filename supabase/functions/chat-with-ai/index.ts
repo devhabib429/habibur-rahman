@@ -50,7 +50,16 @@ serve(async (req) => {
       console.log('Processing prompt:', prompt.substring(0, 100) + '...');
     } catch (e) {
       console.error('Failed to parse request body:', e);
-      throw new Error('Invalid request format');
+      return new Response(
+        JSON.stringify({ error: 'Invalid request format' }),
+        { 
+          status: 400,
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
     }
 
     console.log('Initializing Hugging Face client...');
@@ -101,7 +110,19 @@ serve(async (req) => {
       );
     } catch (error) {
       console.error('Error calling Hugging Face API:', error);
-      throw new Error(`Failed to get response from Hugging Face: ${error.message}`);
+      return new Response(
+        JSON.stringify({ 
+          error: 'Failed to get response from Hugging Face',
+          details: error.message
+        }),
+        { 
+          status: 500,
+          headers: { 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
+          } 
+        }
+      );
     }
   } catch (error) {
     console.error('Error in chat-with-ai function:', error);
