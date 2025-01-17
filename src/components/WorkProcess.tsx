@@ -74,7 +74,7 @@ const WorkProcess = () => {
           transition={{ duration: 0.5, delay: 0.5 }}
           className="text-center mt-16"
         >
-          <Link to="/start-project">
+          <Link to="/project-form">
             <Button
               size="lg"
               className="bg-black hover:bg-gray-800 text-white"

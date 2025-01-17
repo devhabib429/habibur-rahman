@@ -13,7 +13,7 @@ const ResourcesManager = () => {
     description: "",
     type: "",
     url: "",
-    category: "General", // Default category
+    category: "General",
   });
 
   const queryClient = useQueryClient();
@@ -21,22 +21,37 @@ const ResourcesManager = () => {
   const { data: resources, isLoading } = useQuery({
     queryKey: ['resources'],
     queryFn: async () => {
+      console.log('Fetching resources...');
       const { data, error } = await supabase
         .from('resources')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching resources:', error);
+        throw error;
+      }
+      
+      console.log('Fetched resources:', data);
       return data;
     },
   });
 
   const createMutation = useMutation({
     mutationFn: async (newResource: any) => {
+      console.log('Creating new resource:', newResource);
       const { data, error } = await supabase
         .from('resources')
-        .insert([newResource]);
-      if (error) throw error;
+        .insert([newResource])
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error creating resource:', error);
+        throw error;
+      }
+      
+      console.log('Created resource:', data);
       return data;
     },
     onSuccess: () => {
@@ -44,18 +59,28 @@ const ResourcesManager = () => {
       toast.success("Resource added successfully!");
       resetForm();
     },
-    onError: () => {
-      toast.error("Failed to add resource");
+    onError: (error: any) => {
+      console.error('Mutation error:', error);
+      toast.error(`Failed to add resource: ${error.message}`);
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: async (updatedResource: any) => {
+      console.log('Updating resource:', updatedResource);
       const { data, error } = await supabase
         .from('resources')
         .update(updatedResource)
-        .eq('id', updatedResource.id);
-      if (error) throw error;
+        .eq('id', updatedResource.id)
+        .select()
+        .single();
+      
+      if (error) {
+        console.error('Error updating resource:', error);
+        throw error;
+      }
+      
+      console.log('Updated resource:', data);
       return data;
     },
     onSuccess: () => {
@@ -63,30 +88,41 @@ const ResourcesManager = () => {
       toast.success("Resource updated successfully!");
       resetForm();
     },
-    onError: () => {
-      toast.error("Failed to update resource");
+    onError: (error: any) => {
+      console.error('Update error:', error);
+      toast.error(`Failed to update resource: ${error.message}`);
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      console.log('Deleting resource:', id);
       const { error } = await supabase
         .from('resources')
         .delete()
         .eq('id', id);
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Error deleting resource:', error);
+        throw error;
+      }
+      
+      console.log('Resource deleted successfully');
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['resources'] });
       toast.success("Resource deleted successfully!");
     },
-    onError: () => {
-      toast.error("Failed to delete resource");
+    onError: (error: any) => {
+      console.error('Delete error:', error);
+      toast.error(`Failed to delete resource: ${error.message}`);
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Handling form submission:', { isEditing, formData });
+    
     const resourceData = {
       title: formData.title,
       description: formData.description,
@@ -103,6 +139,7 @@ const ResourcesManager = () => {
   };
 
   const handleEdit = (resource: any) => {
+    console.log('Editing resource:', resource);
     setFormData(resource);
     setIsEditing(true);
   };
@@ -117,7 +154,7 @@ const ResourcesManager = () => {
   };
 
   if (isLoading) {
-    return <div className="text-white">Loading resources...</div>;
+    return <div className="text-center py-8">Loading resources...</div>;
   }
 
   return (
