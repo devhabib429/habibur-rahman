@@ -10,6 +10,7 @@ const corsHeaders = {
 
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 2000; // 2 seconds initial delay
+const HF_TOKEN = "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"; // Temporary hardcoded token for testing
 
 async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
   for (let i = 0; i < retries; i++) {
@@ -38,12 +39,6 @@ serve(async (req) => {
 
   try {
     console.log('Received chat request');
-    
-    const hfToken = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN');
-    if (!hfToken) {
-      console.error('HUGGING_FACE_ACCESS_TOKEN is not set');
-      throw new Error('Hugging Face token is not configured');
-    }
 
     let prompt;
     try {
@@ -59,7 +54,7 @@ serve(async (req) => {
     }
 
     console.log('Initializing Hugging Face client...');
-    const hf = new HfInference(hfToken);
+    const hf = new HfInference(HF_TOKEN);
     
     const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide clear and concise responses.`;
     
