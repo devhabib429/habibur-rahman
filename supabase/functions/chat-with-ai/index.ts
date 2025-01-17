@@ -4,6 +4,8 @@ import { HfInference } from 'https://esm.sh/@huggingface/inference@2.3.2'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Max-Age': '86400',
 }
 
 const MAX_RETRIES = 3;
@@ -23,9 +25,9 @@ async function retryWithDelay(fn: () => Promise<any>, retries: number = MAX_RETR
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
+  // This is critical - handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders })
   }
 
   try {
@@ -91,8 +93,8 @@ serve(async (req) => {
         JSON.stringify({ response: cleanResponse }),
         { 
           headers: { 
-            ...corsHeaders, 
-            'Content-Type': 'application/json' 
+            ...corsHeaders,
+            'Content-Type': 'application/json'
           } 
         }
       );
@@ -112,8 +114,8 @@ serve(async (req) => {
       { 
         status: 500,
         headers: { 
-          ...corsHeaders, 
-          'Content-Type': 'application/json' 
+          ...corsHeaders,
+          'Content-Type': 'application/json'
         } 
       }
     );
