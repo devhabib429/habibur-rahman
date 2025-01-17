@@ -9,18 +9,24 @@ const corsHeaders = {
 }
 
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second
+const RETRY_DELAY = 2000; // 2 seconds initial delay
 
-async function retryWithDelay(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
-  try {
-    return await fn();
-  } catch (error) {
-    if (retries > 0) {
-      console.log(`Retrying... ${MAX_RETRIES - retries + 1} attempt`);
-      await new Promise(resolve => setTimeout(resolve, RETRY_DELAY));
-      return retryWithDelay(fn, retries - 1);
+async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
+  for (let i = 0; i < retries; i++) {
+    try {
+      return await fn();
+    } catch (error) {
+      console.error(`Attempt ${i + 1} failed:`, error);
+      
+      if (i === retries - 1) {
+        throw error; // Last attempt failed
+      }
+      
+      // Exponential backoff
+      const delay = RETRY_DELAY * Math.pow(2, i);
+      console.log(`Retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
-    throw error;
   }
 }
 
@@ -59,7 +65,7 @@ serve(async (req) => {
     
     try {
       console.log('Sending request to Hugging Face...');
-      const response = await retryWithDelay(async () => {
+      const response = await retryWithExponentialBackoff(async () => {
         const result = await hf.textGeneration({
           model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
           inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
