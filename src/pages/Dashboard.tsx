@@ -69,12 +69,22 @@ const Dashboard = () => {
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
         <div className="w-full max-w-md space-y-4">
           <div className="text-center space-y-2">
-            <h1 className="text-2xl font-bold">Dashboard Login</h1>
-            <p className="text-gray-500">Sign in to access the dashboard</p>
+            <h1 className="text-2xl font-bold text-black">Dashboard Login</h1>
+            <p className="text-gray-600">Sign in to access the dashboard</p>
           </div>
           <Auth
             supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
+            appearance={{ 
+              theme: ThemeSupa,
+              variables: {
+                default: {
+                  colors: {
+                    brand: '#000000',
+                    brandAccent: '#333333',
+                  },
+                },
+              },
+            }}
             providers={[]}
             theme="light"
           />
@@ -136,7 +146,7 @@ const Dashboard = () => {
                   className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors
                     ${activeSection === item.id 
                       ? 'bg-gray-100 text-black' 
-                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-black'}`}
                 >
                   <item.icon className="w-4 h-4" />
                   <span>{item.title}</span>
@@ -149,7 +159,7 @@ const Dashboard = () => {
       <Button 
         onClick={handleSignOut}
         variant="ghost" 
-        className="w-full mt-4 text-red-600 hover:text-red-700 hover:bg-red-50"
+        className="w-full mt-4 text-black hover:bg-gray-100"
       >
         Sign Out
       </Button>

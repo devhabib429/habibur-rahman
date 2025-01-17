@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { createClient } from "@supabase/supabase-js";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,12 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Pencil, Trash, Plus } from "lucide-react";
-
-const supabase = createClient(
-  'https://fdkushkqnwsljjfaulqg.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZka3VzaGtxbndzbGpqZmF1bHFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2MTAxNjcsImV4cCI6MjA1MDE4NjE2N30.Z_UIgomBp_4xxNaq8GTg3ax6SXFgFg4q4xr5BGYvYFA'
-);
+import { Pencil, Trash } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const HotTakesManager = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -34,22 +29,34 @@ const HotTakesManager = () => {
   const { data: hotTakes, isLoading } = useQuery({
     queryKey: ['hotTakes'],
     queryFn: async () => {
+      console.log('Fetching hot takes...');
       const { data, error } = await supabase
         .from('hot_takes')
         .select('*')
         .order('created_at', { ascending: false });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching hot takes:', error);
+        throw error;
+      }
+      console.log('Fetched hot takes:', data);
       return data;
     },
   });
 
   const createMutation = useMutation({
     mutationFn: async (newTake: any) => {
+      console.log('Creating new hot take:', newTake);
       const { data, error } = await supabase
         .from('hot_takes')
-        .insert([newTake]);
-      if (error) throw error;
+        .insert([newTake])
+        .select();
+      
+      if (error) {
+        console.error('Error creating hot take:', error);
+        throw error;
+      }
+      console.log('Created hot take:', data);
       return data;
     },
     onSuccess: () => {
@@ -57,18 +64,26 @@ const HotTakesManager = () => {
       toast.success("Hot take added successfully!");
       resetForm();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error);
       toast.error("Failed to add hot take");
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: async (updatedTake: any) => {
+      console.log('Updating hot take:', updatedTake);
       const { data, error } = await supabase
         .from('hot_takes')
         .update(updatedTake)
-        .eq('id', updatedTake.id);
-      if (error) throw error;
+        .eq('id', updatedTake.id)
+        .select();
+      
+      if (error) {
+        console.error('Error updating hot take:', error);
+        throw error;
+      }
+      console.log('Updated hot take:', data);
       return data;
     },
     onSuccess: () => {
@@ -76,30 +91,45 @@ const HotTakesManager = () => {
       toast.success("Hot take updated successfully!");
       resetForm();
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error);
       toast.error("Failed to update hot take");
     },
   });
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
+      console.log('Deleting hot take:', id);
       const { error } = await supabase
         .from('hot_takes')
         .delete()
         .eq('id', id);
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Error deleting hot take:', error);
+        throw error;
+      }
+      console.log('Deleted hot take:', id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['hotTakes'] });
       toast.success("Hot take deleted successfully!");
     },
-    onError: () => {
+    onError: (error) => {
+      console.error('Mutation error:', error);
       toast.error("Failed to delete hot take");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting form with data:', formData);
+    
+    if (!formData.category || !formData.opinion || !formData.explanation) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     const takeData = {
       category: formData.category,
       opinion: formData.opinion,
@@ -124,70 +154,74 @@ const HotTakesManager = () => {
   };
 
   if (isLoading) {
-    return <div className="text-white">Loading hot takes...</div>;
+    return <div className="text-black">Loading hot takes...</div>;
   }
 
   return (
     <div className="space-y-8">
-      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border border-gray-200">
         <h3 className="text-xl font-semibold text-black mb-4">
           {isEditing ? "Edit Hot Take" : "Add New Hot Take"}
         </h3>
         
         <div className="grid grid-cols-1 gap-4">
-          <div>
-            <Input
-              placeholder="Category"
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-              className="bg-white border-gray-200 text-black"
-            />
-          </div>
+          <Input
+            placeholder="Category"
+            value={formData.category}
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            className="bg-white border-gray-200 text-black"
+            required
+          />
           
-          <div>
-            <Input
-              placeholder="Opinion"
-              value={formData.opinion}
-              onChange={(e) => setFormData({ ...formData, opinion: e.target.value })}
-              className="bg-white border-gray-200 text-black"
-            />
-          </div>
+          <Input
+            placeholder="Opinion"
+            value={formData.opinion}
+            onChange={(e) => setFormData({ ...formData, opinion: e.target.value })}
+            className="bg-white border-gray-200 text-black"
+            required
+          />
           
-          <div>
-            <Textarea
-              placeholder="Explanation"
-              value={formData.explanation}
-              onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
-              className="bg-white border-gray-200 text-black"
-            />
-          </div>
+          <Textarea
+            placeholder="Explanation"
+            value={formData.explanation}
+            onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
+            className="bg-white border-gray-200 text-black"
+            required
+          />
         </div>
 
         <div className="flex gap-2">
-          <Button type="submit">
+          <Button 
+            type="submit"
+            className="bg-black text-white hover:bg-gray-800"
+          >
             {isEditing ? "Update" : "Add"} Hot Take
           </Button>
           {isEditing && (
-            <Button variant="outline" onClick={resetForm}>
+            <Button 
+              variant="outline" 
+              onClick={resetForm}
+              className="border-black text-black hover:bg-gray-100"
+            >
               Cancel
             </Button>
           )}
         </div>
       </form>
 
-      <div className="rounded-md border border-gray-200 bg-white shadow-sm">
+      <div className="rounded-md border border-gray-200">
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead className="text-black">Category</TableHead>
-              <TableHead className="text-black">Opinion</TableHead>
-              <TableHead className="text-black">Explanation</TableHead>
-              <TableHead className="text-black text-right">Actions</TableHead>
+            <TableRow className="bg-gray-50">
+              <TableHead className="text-black font-semibold">Category</TableHead>
+              <TableHead className="text-black font-semibold">Opinion</TableHead>
+              <TableHead className="text-black font-semibold">Explanation</TableHead>
+              <TableHead className="text-black font-semibold text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {hotTakes?.map((take) => (
-              <TableRow key={take.id}>
+              <TableRow key={take.id} className="border-t border-gray-200">
                 <TableCell className="text-black">{take.category}</TableCell>
                 <TableCell className="text-black">{take.opinion}</TableCell>
                 <TableCell className="text-black">{take.explanation}</TableCell>
@@ -197,15 +231,17 @@ const HotTakesManager = () => {
                       variant="ghost"
                       size="icon"
                       onClick={() => handleEdit(take)}
+                      className="hover:bg-gray-100"
                     >
-                      <Pencil className="h-4 w-4" />
+                      <Pencil className="h-4 w-4 text-black" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
                       onClick={() => deleteMutation.mutate(take.id)}
+                      className="hover:bg-gray-100"
                     >
-                      <Trash className="h-4 w-4" />
+                      <Trash className="h-4 w-4 text-black" />
                     </Button>
                   </div>
                 </TableCell>
