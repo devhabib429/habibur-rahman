@@ -32,7 +32,7 @@ async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: numb
 }
 
 serve(async (req) => {
-  // This is critical - handle CORS preflight requests
+  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -83,7 +83,8 @@ serve(async (req) => {
     console.log('Initializing Hugging Face client...');
     const hf = new HfInference(HF_TOKEN);
     
-    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide clear and concise responses.`;
+    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide clear, concise, and accurate responses.
+Your responses should be well-structured and easy to understand. When providing code examples, ensure they are practical and well-documented.`;
     
     try {
       console.log('Sending request to Hugging Face...');
@@ -92,7 +93,7 @@ serve(async (req) => {
           model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
           inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
           parameters: {
-            max_new_tokens: 512,
+            max_new_tokens: 1024, // Increased token limit for more detailed responses
             temperature: 0.7,
             top_p: 0.95,
             repetition_penalty: 1.15,
