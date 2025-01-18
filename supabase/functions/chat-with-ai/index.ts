@@ -9,7 +9,7 @@ const corsHeaders = {
 }
 
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 1000; // 1 second initial delay
+const RETRY_DELAY = 1000;
 const HF_TOKEN = Deno.env.get("HUGGING_FACE_ACCESS_TOKEN");
 
 async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
@@ -20,16 +20,15 @@ async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: numb
       console.error(`Attempt ${i + 1} failed with error:`, error);
       
       if (i === retries - 1) {
-        throw error; // Last attempt failed
+        throw error;
       }
       
-      // Check if error is related to rate limiting or service availability
       const isRetryableError = error.message?.includes('Service Unavailable') || 
                               error.message?.includes('rate limit') ||
                               error.message?.includes('timeout');
       
       if (!isRetryableError) {
-        throw error; // Don't retry if error is not retryable
+        throw error;
       }
       
       const delay = RETRY_DELAY * Math.pow(2, i);
@@ -40,7 +39,6 @@ async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: numb
 }
 
 serve(async (req) => {
-  // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
   }
@@ -90,22 +88,21 @@ serve(async (req) => {
     console.log('Initializing Hugging Face client...');
     const hf = new HfInference(HF_TOKEN);
     
-    const systemPrompt = `You are a helpful AI assistant powered by Mixtral-8x7B. Provide clear, concise, and accurate responses.
+    const systemPrompt = `You are a helpful AI assistant. Provide clear, concise, and accurate responses.
 Your responses should be well-structured and easy to understand. When providing code examples, ensure they are practical and well-documented.`;
     
     try {
       console.log('Sending request to Hugging Face...');
       const response = await retryWithExponentialBackoff(async () => {
         const result = await hf.textGeneration({
-          model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
+          model: 'tiiuae/falcon-7b-instruct',
           inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
           parameters: {
-            max_new_tokens: 1024,
+            max_new_tokens: 512,
             temperature: 0.7,
             top_p: 0.95,
             repetition_penalty: 1.15,
-            return_full_text: false,
-            wait_for_model: true
+            return_full_text: false
           }
         });
         
@@ -123,8 +120,6 @@ Your responses should be well-structured and easy to understand. When providing 
         .trim()
         .replace(/^Assistant: /, '')
         .replace(/^assistant: /, '');
-
-      console.log('Cleaned response length:', cleanResponse.length);
 
       return new Response(
         JSON.stringify({ response: cleanResponse }),
