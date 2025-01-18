@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -16,6 +17,7 @@ interface BannerData {
   location: string;
   dates: string;
   is_visible: boolean;
+  content: string;
 }
 
 const BannerManager = () => {
@@ -27,7 +29,8 @@ const BannerManager = () => {
     subtitle: '',
     location: '',
     dates: '',
-    is_visible: true
+    is_visible: true,
+    content: ''
   });
 
   const { data: banner, isLoading } = useQuery({
@@ -68,7 +71,8 @@ const BannerManager = () => {
           subtitle: newData.subtitle,
           location: newData.location,
           dates: newData.dates,
-          is_visible: newData.is_visible
+          is_visible: newData.is_visible,
+          content: newData.content
         })
         .eq('id', newData.id);
       
@@ -142,6 +146,15 @@ const BannerManager = () => {
                 <Input
                   value={formData.dates}
                   onChange={(e) => setFormData(prev => ({ ...prev, dates: e.target.value }))}
+                />
+              </div>
+              <div>
+                <Label>Content</Label>
+                <Textarea
+                  value={formData.content || ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
+                  className="min-h-[200px]"
+                  placeholder="Enter the detailed content for this banner..."
                 />
               </div>
               <div className="flex items-center justify-between">
