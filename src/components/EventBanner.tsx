@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Globe, MapPin, Calendar } from 'lucide-react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 interface BannerData {
   id: number;
@@ -14,6 +15,7 @@ interface BannerData {
 }
 
 const EventBanner = () => {
+  const navigate = useNavigate();
   const { data: banner, isLoading, error } = useQuery({
     queryKey: ['eventBanner'],
     queryFn: async () => {
@@ -57,12 +59,22 @@ const EventBanner = () => {
     return null;
   }
 
+  const handleBannerClick = () => {
+    navigate('/banner-content', { 
+      state: { 
+        title: banner.title,
+        subtitle: banner.subtitle
+      }
+    });
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="w-full bg-gradient-to-r from-[#8B5CF6] via-[#7E69AB] to-[#9b87f5] py-2"
+      onClick={handleBannerClick}
+      className="w-full bg-gradient-to-r from-[#8B5CF6] via-[#7E69AB] to-[#9b87f5] py-2 cursor-pointer hover:opacity-90 transition-opacity"
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-center gap-4 text-white text-sm md:text-base">

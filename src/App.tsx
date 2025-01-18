@@ -6,6 +6,7 @@ import Chat from "./pages/Chat";
 import Dashboard from "./pages/Dashboard";
 import DevOpsUpdates from "./pages/DevOpsUpdates";
 import ERPNextUpdates from "./pages/ERPNextUpdates";
+import BannerContent from "./pages/BannerContent";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/devops-updates" element={<DevOpsUpdates />} />
         <Route path="/erpnext-updates" element={<ERPNextUpdates />} />
+        <Route path="/banner-content" element={<BannerContent />} />
       </Routes>
     </Router>
   );
