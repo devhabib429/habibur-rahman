@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,11 +13,17 @@ interface BannerContentState {
 
 const BannerContent = () => {
   const location = useLocation();
-  const bannerData = location.state as BannerContentState;
+  const bannerData = location.state as BannerContentState | null;
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { data: banner } = useQuery({
+  // If no banner data was passed through navigation, redirect to home
+  if (!bannerData) {
+    console.log('No banner data found in location state, redirecting to home');
+    return <Navigate to="/" replace />;
+  }
+
+  const { data: banner, isLoading, error } = useQuery({
     queryKey: ['eventBanner'],
     queryFn: async () => {
       console.log('Fetching banner content...');
@@ -26,7 +32,7 @@ const BannerContent = () => {
         .select('content')
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
       
       if (error) {
         console.error('Error fetching banner content:', error);
@@ -50,6 +56,22 @@ const BannerContent = () => {
       return () => clearTimeout(timeout);
     }
   }, [currentIndex, content]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-xl text-gray-600">Loading content...</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-xl text-red-600">Error loading content. Please try again later.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
