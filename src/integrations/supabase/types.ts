@@ -77,6 +77,7 @@ export type Database = {
       }
       event_banners: {
         Row: {
+          content: string | null
           created_at: string
           dates: string | null
           id: number
@@ -86,6 +87,7 @@ export type Database = {
           title: string | null
         }
         Insert: {
+          content?: string | null
           created_at?: string
           dates?: string | null
           id?: number
@@ -95,6 +97,7 @@ export type Database = {
           title?: string | null
         }
         Update: {
+          content?: string | null
           created_at?: string
           dates?: string | null
           id?: number
