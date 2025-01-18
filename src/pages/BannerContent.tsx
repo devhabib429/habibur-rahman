@@ -3,11 +3,12 @@ import { useLocation, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
 interface BannerContentState {
   title: string;
   subtitle: string;
-  description?: string;
 }
 
 const BannerContent = () => {
@@ -15,30 +16,40 @@ const BannerContent = () => {
   const bannerData = location.state as BannerContentState;
   const [displayText, setDisplayText] = useState('');
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const { data: banner } = useQuery({
+    queryKey: ['eventBanner'],
+    queryFn: async () => {
+      console.log('Fetching banner content...');
+      const { data, error } = await supabase
+        .from('event_banners')
+        .select('content')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching banner content:', error);
+        throw error;
+      }
+      
+      console.log('Banner content received:', data);
+      return data;
+    }
+  });
   
-  const description = `Welcome to our latest event! We're excited to share more details about "${bannerData.title}". 
-  ${bannerData.subtitle}
-  
-  Join us for an incredible experience where we'll explore innovative solutions and connect with industry leaders.
-  
-  What to expect:
-  - In-depth discussions
-  - Networking opportunities
-  - Live demonstrations
-  - Interactive sessions
-  
-  Don't miss this opportunity to be part of something extraordinary!`;
+  const content = banner?.content || 'No content available.';
 
   useEffect(() => {
-    if (currentIndex < description.length) {
+    if (currentIndex < content.length) {
       const timeout = setTimeout(() => {
-        setDisplayText(prev => prev + description[currentIndex]);
+        setDisplayText(prev => prev + content[currentIndex]);
         setCurrentIndex(currentIndex + 1);
-      }, 30); // Adjust speed of typing here
+      }, 30);
 
       return () => clearTimeout(timeout);
     }
-  }, [currentIndex, description]);
+  }, [currentIndex, content]);
 
   return (
     <div className="min-h-screen bg-white">
