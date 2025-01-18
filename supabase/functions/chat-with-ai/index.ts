@@ -9,7 +9,7 @@ const corsHeaders = {
 }
 
 const MAX_RETRIES = 3;
-const RETRY_DELAY = 2000; // 2 seconds initial delay
+const RETRY_DELAY = 1000; // 1 second initial delay
 const HF_TOKEN = Deno.env.get("HUGGING_FACE_ACCESS_TOKEN");
 
 async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: number = MAX_RETRIES): Promise<any> {
@@ -17,15 +17,23 @@ async function retryWithExponentialBackoff(fn: () => Promise<any>, retries: numb
     try {
       return await fn();
     } catch (error) {
-      console.error(`Attempt ${i + 1} failed:`, error);
+      console.error(`Attempt ${i + 1} failed with error:`, error);
       
       if (i === retries - 1) {
         throw error; // Last attempt failed
       }
       
-      // Exponential backoff
+      // Check if error is related to rate limiting or service availability
+      const isRetryableError = error.message?.includes('Service Unavailable') || 
+                              error.message?.includes('rate limit') ||
+                              error.message?.includes('timeout');
+      
+      if (!isRetryableError) {
+        throw error; // Don't retry if error is not retryable
+      }
+      
       const delay = RETRY_DELAY * Math.pow(2, i);
-      console.log(`Retrying in ${delay}ms...`);
+      console.log(`Waiting ${delay}ms before retry...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
@@ -40,7 +48,6 @@ serve(async (req) => {
   try {
     console.log('Received chat request');
 
-    // Validate Hugging Face token
     if (!HF_TOKEN) {
       console.error('HUGGING_FACE_ACCESS_TOKEN is not configured');
       return new Response(
@@ -93,7 +100,7 @@ Your responses should be well-structured and easy to understand. When providing 
           model: 'mistralai/Mixtral-8x7B-Instruct-v0.1',
           inputs: `<s>[INST] ${systemPrompt}\n\nUser: ${prompt} [/INST]`,
           parameters: {
-            max_new_tokens: 1024, // Increased token limit for more detailed responses
+            max_new_tokens: 1024,
             temperature: 0.7,
             top_p: 0.95,
             repetition_penalty: 1.15,
@@ -109,7 +116,8 @@ Your responses should be well-structured and easy to understand. When providing 
         return result;
       });
 
-      console.log('Response received:', JSON.stringify(response).substring(0, 200) + '...');
+      console.log('Response received successfully');
+      console.log('Response preview:', response.generated_text.substring(0, 100) + '...');
 
       let cleanResponse = response.generated_text
         .trim()
@@ -132,7 +140,8 @@ Your responses should be well-structured and easy to understand. When providing 
       return new Response(
         JSON.stringify({ 
           error: 'Failed to get response from Hugging Face',
-          details: error.message
+          details: error.message,
+          timestamp: new Date().toISOString()
         }),
         { 
           status: 500,
@@ -144,7 +153,7 @@ Your responses should be well-structured and easy to understand. When providing 
       );
     }
   } catch (error) {
-    console.error('Error in chat-with-ai function:', error);
+    console.error('Unexpected error in chat-with-ai function:', error);
     
     return new Response(
       JSON.stringify({ 
