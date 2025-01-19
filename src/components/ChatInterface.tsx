@@ -26,12 +26,35 @@ const ChatInterface = ({ onSubmit, isLoading }: ChatInterfaceProps) => {
 
   return (
     <div className="flex flex-col items-center w-full max-w-3xl mx-auto space-y-8">
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold">The AI search companion, optimized for developers.</h1>
-      </div>
+      {!input && (
+        <>
+          <div className="text-center space-y-2">
+            <h1 className="text-2xl font-bold">The AI search companion, optimized for developers.</h1>
+          </div>
+
+          <div className="space-y-4 w-full">
+            <div className="text-sm font-medium">Explore:</div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {exampleQuestions.map((question, index) => (
+                <Button
+                  key={index}
+                  variant="secondary"
+                  className="bg-[#dcf8c6] hover:bg-[#c5e9a5] text-black rounded-full text-sm border-none"
+                  onClick={() => {
+                    setInput(question);
+                    onSubmit(question);
+                  }}
+                >
+                  {question}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
 
       <form onSubmit={handleSubmit} className="w-full">
-        <div className="relative flex items-center">
+        <div className="relative flex items-center bg-white rounded-full shadow-sm">
           <div className="absolute left-3 text-gray-400">
             <Search className="h-5 w-5" />
           </div>
@@ -39,46 +62,28 @@ const ChatInterface = ({ onSubmit, isLoading }: ChatInterfaceProps) => {
           <Input
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask anything or paste any URL..."
-            className="pl-10 pr-20 py-6 w-full text-base rounded-full border-gray-200 focus:border-gray-300 focus:ring-gray-300"
+            placeholder="Type a message..."
+            className="pl-10 pr-16 py-6 w-full text-base rounded-full border-gray-200 focus:border-gray-300 focus:ring-gray-300"
           />
           
-          <div className="absolute right-3 flex items-center space-x-2">
+          <div className="absolute right-3">
             <Button
               type="submit"
               disabled={isLoading}
-              variant="ghost"
               size="icon"
-              className="hover:bg-transparent"
+              className="bg-[#25D366] hover:bg-[#128C7E] text-white rounded-full w-10 h-10 flex items-center justify-center"
             >
-              <Send className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+              <Send className="h-5 w-5" />
             </Button>
           </div>
         </div>
       </form>
 
-      <div className="text-sm text-gray-500">
-        To write multiple lines, simply use Shift + ↵
-      </div>
-
-      <div className="space-y-4 w-full">
-        <div className="text-sm font-medium">Explore:</div>
-        <div className="flex flex-wrap gap-2 justify-center">
-          {exampleQuestions.map((question, index) => (
-            <Button
-              key={index}
-              variant="secondary"
-              className="bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-full text-sm"
-              onClick={() => {
-                setInput(question);
-                onSubmit(question);
-              }}
-            >
-              {question}
-            </Button>
-          ))}
+      {!input && (
+        <div className="text-sm text-gray-500">
+          To write multiple lines, simply use Shift + ↵
         </div>
-      </div>
+      )}
     </div>
   );
 };
