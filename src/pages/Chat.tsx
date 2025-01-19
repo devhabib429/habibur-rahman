@@ -77,45 +77,37 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#f0f2f5]">
+    <div className="flex flex-col min-h-screen bg-white">
       <Navbar />
       
       <main className="flex-1 container mx-auto px-4 py-8 mt-16">
-        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
+        <div className="max-w-4xl mx-auto">
           {messages.length === 0 ? (
             <ChatInterface onSubmit={handleSubmit} isLoading={isLoading} />
           ) : (
-            <div className="flex flex-col h-[calc(100vh-12rem)]">
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-[#efeae2] bg-opacity-30">
-                {messages.map((message, index) => (
+            <div className="space-y-6">
+              {messages.map((message, index) => (
+                <div
+                  key={index}
+                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
                   <div
-                    key={index}
-                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`p-4 rounded-2xl max-w-[80%] ${
+                      message.role === 'user' 
+                        ? 'bg-blue-600 text-white' 
+                        : 'bg-gray-100 text-black'
+                    }`}
                   >
-                    <div
-                      className={`relative max-w-[80%] px-4 py-2 rounded-lg shadow-sm
-                        ${message.role === 'user' 
-                          ? 'bg-[#dcf8c6] text-black ml-auto rounded-tr-none' 
-                          : 'bg-white text-black mr-auto rounded-tl-none'
-                        }
-                      `}
-                    >
-                      <div className="whitespace-pre-wrap break-words">
-                        {message.displayContent === '▋' ? (
-                          <span className="inline-block animate-pulse">▋</span>
-                        ) : (
-                          message.displayContent || message.content
-                        )}
-                      </div>
-                      <div className="text-[10px] text-gray-500 text-right mt-1">
-                        {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </div>
-                    </div>
+                    {message.displayContent === '▋' ? (
+                      <span className="inline-block animate-pulse">▋</span>
+                    ) : (
+                      message.displayContent || message.content
+                    )}
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
               
-              <div className="border-t bg-[#f0f2f5] p-4">
+              <div className="sticky bottom-0 pt-4">
                 <ChatInterface onSubmit={handleSubmit} isLoading={isLoading} />
               </div>
             </div>
