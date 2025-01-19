@@ -86,28 +86,30 @@ const Chat = () => {
             <ChatInterface onSubmit={handleSubmit} isLoading={isLoading} />
           ) : (
             <div className="space-y-6">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
+              <div className="space-y-6 mb-6 max-h-[60vh] overflow-y-auto custom-scrollbar p-4">
+                {messages.map((message, index) => (
                   <div
-                    className={`p-4 rounded-2xl max-w-[80%] ${
-                      message.role === 'user' 
-                        ? 'bg-blue-600 text-white' 
-                        : 'bg-gray-100 text-black'
-                    }`}
+                    key={index}
+                    className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    {message.displayContent === '▋' ? (
-                      <span className="inline-block animate-pulse">▋</span>
-                    ) : (
-                      message.displayContent || message.content
-                    )}
+                    <div
+                      className={`p-4 rounded-2xl max-w-[80%] whitespace-pre-wrap break-words ${
+                        message.role === 'user' 
+                          ? 'bg-blue-600 text-white ml-auto' 
+                          : 'bg-gray-100 text-black mr-auto'
+                      }`}
+                    >
+                      {message.displayContent === '▋' ? (
+                        <span className="inline-block animate-pulse">▋</span>
+                      ) : (
+                        message.displayContent || message.content
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
               
-              <div className="sticky bottom-0 pt-4">
+              <div className="sticky bottom-0 bg-white pt-4 border-t">
                 <ChatInterface onSubmit={handleSubmit} isLoading={isLoading} />
               </div>
             </div>
