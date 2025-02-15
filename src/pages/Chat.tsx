@@ -156,7 +156,7 @@ const Chat = () => {
             <p className="text-gray-400">Powered by Mixtral-8x7B</p>
           </div>
           
-          <div className="flex-1 bg-[#222222] rounded-2xl shadow-lg backdrop-blur-lg border border-gray-800 flex flex-col overflow-hidden">
+          <div className="flex-1 bg-[#1E1E1E] rounded-2xl shadow-lg backdrop-blur-lg border border-gray-800 flex flex-col overflow-hidden">
             <div className="flex-1 p-6 overflow-y-auto space-y-4 custom-scrollbar max-h-[60vh]">
               {messages.length === 0 && (
                 <div className="text-center text-gray-500 mt-20 animate-fade-in">
@@ -172,8 +172,8 @@ const Chat = () => {
                   <div
                     className={`p-4 rounded-2xl max-w-[80%] shadow-md ${
                       message.role === 'user' 
-                        ? 'bg-[#333333] text-white ml-auto rounded-tr-none' 
-                        : 'bg-[#403E43] text-white mr-auto rounded-tl-none'
+                        ? 'bg-[#2A2A2A] text-white ml-auto rounded-tr-none' 
+                        : 'bg-[#323232] text-white mr-auto rounded-tl-none'
                     }`}
                   >
                     {message.displayContent === '▋' ? (
@@ -192,19 +192,19 @@ const Chat = () => {
               ))}
             </div>
             
-            <form onSubmit={handleSubmit} className="p-4 border-t border-gray-800 bg-[#222222] sticky bottom-0">
+            <form onSubmit={handleSubmit} className="p-4 border-t border-gray-800 bg-[#1E1E1E] sticky bottom-0">
               <div className="flex gap-2 items-center">
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message..."
                   disabled={isLoading || isTyping}
-                  className="flex-1 bg-[#333333] border-gray-700 focus:border-gray-600 text-white placeholder:text-gray-500 transition-all duration-200 hover:border-gray-600 focus:ring-2 focus:ring-gray-500/10 rounded-full py-6"
+                  className="flex-1 bg-[#2A2A2A] border-gray-700 focus:border-gray-600 text-white placeholder:text-gray-500 transition-all duration-200 hover:border-gray-600 focus:ring-2 focus:ring-gray-500/10 rounded-full py-6"
                 />
                 <Button 
                   type="submit" 
                   disabled={isLoading || isTyping}
-                  className="bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 hover:scale-105 active:scale-95 rounded-full w-12 h-12 p-0 flex items-center justify-center"
+                  className="bg-[#2A2A2A] hover:bg-[#323232] text-white transition-all duration-200 hover:scale-105 active:scale-95 rounded-full w-12 h-12 p-0 flex items-center justify-center"
                 >
                   {isLoading ? (
                     <Loader2 className="h-5 w-5 animate-spin" />
