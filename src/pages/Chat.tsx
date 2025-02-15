@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -24,7 +25,7 @@ const Chat = () => {
           ? { ...msg, displayContent: message.slice(0, i) }
           : msg
       ));
-      await new Promise(resolve => setTimeout(resolve, 10));
+      await new Promise(resolve => setTimeout(resolve, 20));
     }
     setIsTyping(false);
   };
@@ -142,25 +143,25 @@ const Chat = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
+    <div className="flex flex-col min-h-screen bg-[#1A1F2C]">
       <Navbar />
       
       <main className="flex-1 container mx-auto px-4 py-8 mt-16 flex flex-col">
         <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full">
           <div className="mb-8 text-center animate-fade-in">
-            <h1 className="text-4xl font-bold text-black mb-4 flex items-center justify-center gap-3">
-              <MessageSquare className="h-8 w-8 animate-bounce" />
+            <h1 className="text-4xl font-bold text-white mb-4 flex items-center justify-center gap-3">
+              <MessageSquare className="h-8 w-8" />
               Chat with AI Assistant
             </h1>
-            <p className="text-gray-600">Powered by Mixtral-8x7B</p>
+            <p className="text-gray-400">Powered by Mixtral-8x7B</p>
           </div>
           
-          <div className="flex-1 bg-white rounded-2xl shadow-lg backdrop-blur-lg border border-gray-200 flex flex-col overflow-hidden animate-scale-in max-h-[60vh]">
-            <div className="flex-1 p-6 overflow-y-auto space-y-4 custom-scrollbar">
+          <div className="flex-1 bg-[#222222] rounded-2xl shadow-lg backdrop-blur-lg border border-gray-800 flex flex-col overflow-hidden">
+            <div className="flex-1 p-6 overflow-y-auto space-y-4 custom-scrollbar max-h-[60vh]">
               {messages.length === 0 && (
-                <div className="text-center text-gray-400 mt-20 animate-fade-in">
-                  <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50 animate-pulse text-gray-400" />
-                  <p className="text-gray-600">Start a conversation with the AI assistant</p>
+                <div className="text-center text-gray-500 mt-20 animate-fade-in">
+                  <MessageSquare className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>Start a conversation with the AI assistant</p>
                 </div>
               )}
               {messages.map((message, index) => (
@@ -169,21 +170,20 @@ const Chat = () => {
                   className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
-                    className={`p-4 rounded-2xl max-w-[80%] animate-fade-in shadow-sm ${
+                    className={`p-4 rounded-2xl max-w-[80%] shadow-md ${
                       message.role === 'user' 
-                        ? 'bg-black text-white' 
-                        : 'bg-gray-100 text-black border border-gray-200'
+                        ? 'bg-[#333333] text-white ml-auto rounded-tr-none' 
+                        : 'bg-[#403E43] text-white mr-auto rounded-tl-none'
                     }`}
-                    style={{
-                      animation: `fade-in 0.3s ease-out ${index * 0.1}s`,
-                      opacity: 0,
-                      animationFillMode: 'forwards'
-                    }}
                   >
                     {message.displayContent === '▋' ? (
-                      <span className="inline-block animate-pulse">▋</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                      </div>
                     ) : (
-                      <div className="prose prose-sm max-w-none">
+                      <div className="prose prose-sm max-w-none prose-invert">
                         {formatMessage(message.displayContent || message.content)}
                       </div>
                     )}
@@ -192,24 +192,24 @@ const Chat = () => {
               ))}
             </div>
             
-            <form onSubmit={handleSubmit} className="p-4 border-t border-gray-200 animate-fade-in bg-white">
+            <form onSubmit={handleSubmit} className="p-4 border-t border-gray-800 bg-[#222222] sticky bottom-0">
               <div className="flex gap-2 items-center">
                 <Input
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Type your message..."
                   disabled={isLoading || isTyping}
-                  className="flex-1 bg-white border-gray-200 focus:border-black text-black placeholder:text-gray-400 transition-all duration-200 hover:border-gray-300 focus:ring-2 focus:ring-black/10 rounded-xl"
+                  className="flex-1 bg-[#333333] border-gray-700 focus:border-gray-600 text-white placeholder:text-gray-500 transition-all duration-200 hover:border-gray-600 focus:ring-2 focus:ring-gray-500/10 rounded-full py-6"
                 />
                 <Button 
                   type="submit" 
                   disabled={isLoading || isTyping}
-                  className="bg-black hover:bg-gray-800 text-white transition-all duration-200 hover:scale-105 active:scale-95 rounded-xl px-6"
+                  className="bg-gray-700 hover:bg-gray-600 text-white transition-all duration-200 hover:scale-105 active:scale-95 rounded-full w-12 h-12 p-0 flex items-center justify-center"
                 >
                   {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <Loader2 className="h-5 w-5 animate-spin" />
                   ) : (
-                    <SendHorizontal className="h-4 w-4" />
+                    <SendHorizontal className="h-5 w-5" />
                   )}
                 </Button>
               </div>
