@@ -80,6 +80,26 @@ const Index = () => {
             </div>
             
             <ResourcesPreview />
+            <div className="py-16 bg-gray-50">
+              <div className="container mx-auto px-4 text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="max-w-3xl mx-auto"
+                >
+                  <h2 className="text-3xl font-bold mb-6">Explore Our Resources</h2>
+                  <p className="text-gray-600 mb-8">
+                    Connect with fellow developers, share knowledge, and participate in exciting projects.
+                  </p>
+                  <Link to="/community">
+                    <Button className="bg-black hover:bg-gray-800 text-white px-8 py-6 rounded-lg text-lg font-medium transition-all duration-200 hover:scale-105 hover:shadow-xl shadow-black/25">
+                      Visit Resource Center
+                    </Button>
+                  </Link>
+                </motion.div>
+              </div>
+            </div>
             <UnpopularOpinions />
             <ContactSection />
             <Newsletter />

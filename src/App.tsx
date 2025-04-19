@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import DevOpsUpdates from "./pages/DevOpsUpdates";
 import ERPNextUpdates from "./pages/ERPNextUpdates";
 import BannerContent from "./pages/BannerContent";
+import Community from "./pages/Community";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/devops-updates" element={<DevOpsUpdates />} />
         <Route path="/erpnext-updates" element={<ERPNextUpdates />} />
         <Route path="/banner-content" element={<BannerContent />} />
+        <Route path="/community" element={<Community />} />
       </Routes>
     </Router>
   );
