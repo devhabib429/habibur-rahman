@@ -2,6 +2,13 @@ import { MessageSquare, Calendar } from "lucide-react";
 import { motion } from "framer-motion";
 
 const ContactSection = () => {
+  // Function to open Google Meet with the email address
+  const openGoogleMeet = () => {
+    const email = "dehabib429@gmail.com";
+    const googleMeetUrl = `https://meet.google.com/new?email=${encodeURIComponent(email)}`;
+    window.open(googleMeetUrl, "_blank");
+  };
+
   return (
     <section className="py-24 relative overflow-hidden bg-white">
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#0000000a_1px,transparent_1px),linear-gradient(to_bottom,#0000000a_1px,transparent_1px)] bg-[size:24px_24px]" />
@@ -49,10 +56,8 @@ const ContactSection = () => {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000" />
             </motion.a>
             
-            <motion.a
-              href="https://calendly.com/HRahman429"
-              target="_blank"
-              rel="noopener noreferrer"
+            <motion.button
+              onClick={openGoogleMeet}
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
               className="group relative overflow-hidden px-8 py-4 rounded-xl bg-black text-white flex items-center justify-center gap-3 transition-all duration-300 shadow-sm hover:shadow-md w-full sm:w-auto min-w-[200px]"
@@ -60,7 +65,7 @@ const ContactSection = () => {
               <Calendar className="w-5 h-5 transition-transform group-hover:rotate-12" />
               <span className="font-medium">Schedule a Meeting</span>
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-1000" />
-            </motion.a>
+            </motion.button>
           </div>
         </motion.div>
       </div>
